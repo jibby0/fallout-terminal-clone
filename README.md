@@ -1,16 +1,16 @@
 # fallout-terminal-clone
-WHAT IS fallout-terminal-clone?
+What is fallout-terminal-clone?
 	
 	fallout-terminal-clone is a modest recreation of the terminal hacking system
 	in Fallout 3 and Fallout: New Vegas developed with curses. It runs directly
 	in your terminal or command prompt. I mostly did this as a fun and 
 	interesting way to explore C.
 	
-INSTRUCTIONS
+Instructions
 
 	Use WASD to move, and ENTER to choose your selected letter. Ctrl-C to quit.
 
-BUILDING
+Building
 
 	WINDOWS
 
@@ -43,7 +43,7 @@ BUILDING
 		build instructions.
 
 
-PLANS FOR THE FUTURE
+Plans for the Future
 
 	ADD a config file that allows you to:
 		change difficulty
