@@ -53,6 +53,9 @@ Plans for the Future
 
 
 
-I DO NOT OWN THE IDEA FOR THIS GAME, NOR DO I CLAIM ANY OWNERSHIP
-OF FALLOUT 3 OR FALLOUT: NEW VEGAS. THOSE COPYRIGHTS ARE THE 
-PROPERTY OF BETHESDA SOFTWORKS.
+I do not own the idea for this game, nor do I claim any ownership
+of Fallout 3 or Fallout: New Vegas. Those copyrights are the 
+property of Bethesda Softworks.
+
+The included PDCurses dependencies are listed as Public Domain,
+and can be found at http://pdcurses.sourceforge.net/
