@@ -79,6 +79,7 @@ void printChoicesRight(int hex, char arr[], int line){
 }
 
 int intro(){
+	clear();
 	usleep(250000);
 	char arr[] = "WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK";
 	
