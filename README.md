@@ -22,10 +22,10 @@ Building
 		necessary PDcurses libraries.
 		
 		Once this is finished, you can compile by running:
-		gcc FalloutTerminalWin.c -lpdcurses -static -o FalloutTerminal.exe
+		gcc FalloutTerminalWin.c -lpdcurses -o FalloutTerminal.exe
 
-		The -static flag is optional, but ensures you won't need to bundle
-		libpdcurses.dll with your binary.
+		Make sure you include pdcurses.dll (found in src\dep\bin)
+		with your binary.
 
 	LINUX
 
