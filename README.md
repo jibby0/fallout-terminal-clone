@@ -33,14 +33,21 @@ Building
 			- gcc
 			- ncurses
 
-		Once the above dependencies are satisfied, simply run:
-		gcc FalloutTerminalLinux.c -lncurses -o FalloutTerminal
+		Once the above dependencies are satisfied, simply open 
+		a terminal in the src/ directory and run:
+		gcc FalloutTerminalUnix.c -lncurses -o FalloutTerminal
 		
 	OSX
 		
-		I don't have an OSX system to test compilation on. I would 
-		reccommend installing ncurses, then attempting the Linux
-		build instructions.
+		Requirements:
+			Xcode Tools
+		
+		Install nurses on OS X as described here:
+			https://gist.github.com/cnruby/960344
+		
+		Once this is finished, simply open 
+		a terminal in the src/ directory and run:
+		gcc FalloutTerminalUnix.c -lncurses -o FalloutTerminal
 
 
 Plans for the Future

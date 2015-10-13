@@ -83,7 +83,7 @@ int intro(){
 	char arr[] = "WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK";
 	
 	bool stop = slowPrint(arr,sizeof(arr), 0);
-	if(stop){return;}
+	if(stop){return 0;}
 	move(1, 0);
 	refresh();
 	usleep(30000);
@@ -94,57 +94,57 @@ int intro(){
 
 	char arr2[] = "SET TERMINAL/INQUIRE";
 	stop = slowType(arr2,sizeof(arr2), 2);
-	if(stop){return;}
+	if(stop){return 0;}
 	
 
 	char arr3[] = "RIT-V300";
 	stop = slowPrint(arr3,sizeof(arr3), 4);
-	if(stop){return;}
+	if(stop){return 0;}
 
 	mvprintw(6,0,"%c", '>');
 	refresh();
 	usleep(1500000);
 	char arr4[] = "SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F";
 	stop = slowType(arr4,sizeof(arr4),6);
-	if(stop){return;}
+	if(stop){return 0;}
 	
 	mvprintw(7,0,"%c", '>');
 	refresh();
 	usleep(1500000);
 	char arr5[] = "SET HALT RESTART/MAINT";
 	stop = slowType(arr5,sizeof(arr5),7);
-	if(stop){return;}
+	if(stop){return 0;}
 	
 	char arr6[] = "Initializing Robco Industries(TM) Boot Agent v2.3.0";
 	stop = slowPrint(arr6,sizeof(arr6),9);
-	if(stop){return;}
+	if(stop){return 0;}
 
 	char arr7[] = "RBIOS-4.02.08.00 53EE5.E7.E8";
 	stop = slowPrint(arr7,sizeof(arr7),10);
-	if(stop){return;}
+	if(stop){return 0;}
 
 	char arr8[] = "Copyright 2201-22-3 Robco Ind.";
 	stop = slowPrint(arr8,sizeof(arr8),11);
-	if(stop){return;}
+	if(stop){return 0;}
 
 	char arr9[] = "Uppermem: 64 KB";
 	stop = slowPrint(arr9,sizeof(arr9),12);
-	if(stop){return;}
+	if(stop){return 0;}
 
 	char arr10[] = "Root (5A8)";
 	stop = slowPrint(arr10,sizeof(arr10),13);
-	if(stop){return;}
+	if(stop){return 0;}
 
 	char arr11[] = "Maintenance Mode";
 	stop = slowPrint(arr11,sizeof(arr11),14);
-	if(stop){return;}
+	if(stop){return 0;}
 
 	mvprintw(16,0,"%c",'>');
 	refresh();
 	usleep(1500000);
 	char arr12[] = "RUN DEBUG/ACCOUNTS.F";
 	stop = slowType(arr12,sizeof(arr12),16);
-	if(stop){return;}
+	if(stop){return 0;}
 	move(16,0);
 	refresh();
 	usleep(50000);
