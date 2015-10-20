@@ -2,6 +2,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 // Sleep is in Windows.h, PDCurses is in curses.h.  
 // Win32 PDcurses build MUST use Sleep, not usleep.
@@ -149,6 +150,7 @@ int intro(){
 	move(16,0);
 	refresh();
 	usleep(50000);
+	clear();
 }
 
 
