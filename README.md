@@ -22,7 +22,7 @@ Building
 		necessary PDcurses libraries.
 		
 		Once this is finished, you can compile by running:
-		gcc FalloutTerminalWin.c -lpdcurses -o FalloutTerminal.exe
+		gcc FalloutTerminal.c -lpdcurses -o FalloutTerminal.exe
 
 		Make sure you include pdcurses.dll (found in src\dep\bin)
 		with your binary.
@@ -35,7 +35,7 @@ Building
 
 		Once the above dependencies are satisfied, simply open 
 		a terminal in the src/ directory and run:
-		gcc FalloutTerminalUnix.c -lncurses -o FalloutTerminal
+		gcc FalloutTerminalU.c -lncurses -o FalloutTerminal
 		
 	OSX
 		
@@ -47,7 +47,7 @@ Building
 		
 		Once this is finished, simply open 
 		a terminal in the src/ directory and run:
-		gcc FalloutTerminalUnix.c -lncurses -o FalloutTerminal
+		gcc FalloutTerminal.c -lncurses -o FalloutTerminal
 
 
 Plans for the Future
