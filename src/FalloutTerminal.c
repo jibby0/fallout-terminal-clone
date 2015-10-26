@@ -1,14 +1,25 @@
-#include <ncurses.h>
+#ifdef _WIN32
+#	include <Windows.h>
+#	include <curses.h>
+#	define SLEEP(delay) Sleep(delay/1000)
+#else
+#	include <ncurses.h>
+#	define SLEEP(delay) usleep(delay)
+#endif
+
 #include <time.h>
 #include <unistd.h>
 #include <stdbool.h>
+
+
+// Thanks to /u/aftli_work for the file consolidation suggestion!
 
 // Sleep is in Windows.h, PDCurses is in curses.h.  
 // Win32 PDcurses build MUST use Sleep, not usleep.
 // usleep/1000 = Sleep
 
 // Windows includes booleans in Windows.h.
-// Unix requires stdbool.h, which names them bools.
+// Unix requires stdbool.h, which names them bools. So I used bools.
 
 bool slowPrint(char arr[], int size, int line){
 	int i;
@@ -19,7 +30,7 @@ bool slowPrint(char arr[], int size, int line){
 		if(kbhit()){
 			return TRUE;
 		}
-		usleep(20000);
+		SLEEP(20000);
 	}
 	return FALSE;
 }
@@ -33,7 +44,7 @@ bool slowType(char arr[], int size, int line){
 		if(kbhit()){
 			return TRUE;
 		}
-		usleep(70000);
+		SLEEP(70000);
 	}
 	return FALSE;
 }
@@ -44,7 +55,7 @@ void passPrint(char arr[], int size, int line){
 		mvprintw(line,i,"%c",arr[i]);
 		move(line, i+1);
 		refresh();
-		usleep(20000);
+		SLEEP(20000);
 	}
 }
 
@@ -65,7 +76,7 @@ void printChoicesLeft(int hex, char arr[], int line){
 		mvprintw(line,7+i,"%c",arr[i]);
 	move(line, 20);
 	refresh();
-	usleep(30000);
+	SLEEP(30000);
 }
 
 void printChoicesRight(int hex, char arr[], int line){
@@ -75,23 +86,23 @@ void printChoicesRight(int hex, char arr[], int line){
 		mvprintw(line,27+i,"%c",arr[i]);
 	move(line, 40);
 	refresh();
-	usleep(30000);
+	SLEEP(30000);
 }
 
 int intro(){
 	clear();
-	usleep(250000);
+	SLEEP(250000);
 	char arr[] = "WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK";
 	
 	bool stop = slowPrint(arr,sizeof(arr), 0);
 	if(stop){return 0;}
 	move(1, 0);
 	refresh();
-	usleep(30000);
+	SLEEP(30000);
 	mvprintw(2,0,"%c", '>');
 	move(2,1);
 	refresh();
-	usleep(1500000);
+	SLEEP(1500000);
 
 	char arr2[] = "SET TERMINAL/INQUIRE";
 	stop = slowType(arr2,sizeof(arr2), 2);
@@ -104,14 +115,14 @@ int intro(){
 
 	mvprintw(6,0,"%c", '>');
 	refresh();
-	usleep(1500000);
+	SLEEP(1500000);
 	char arr4[] = "SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F";
 	stop = slowType(arr4,sizeof(arr4),6);
 	if(stop){return 0;}
 	
 	mvprintw(7,0,"%c", '>');
 	refresh();
-	usleep(1500000);
+	SLEEP(1500000);
 	char arr5[] = "SET HALT RESTART/MAINT";
 	stop = slowType(arr5,sizeof(arr5),7);
 	if(stop){return 0;}
@@ -142,13 +153,13 @@ int intro(){
 
 	mvprintw(16,0,"%c",'>');
 	refresh();
-	usleep(1500000);
+	SLEEP(1500000);
 	char arr12[] = "RUN DEBUG/ACCOUNTS.F";
 	stop = slowType(arr12,sizeof(arr12),16);
 	if(stop){return 0;}
 	move(16,0);
 	refresh();
-	usleep(50000);
+	SLEEP(50000);
 }
 
 
@@ -163,6 +174,7 @@ bool currentCharContains(char arr[],char c){
 
 void pass(){
 	// Start a new screen where nodelay is false
+	erase();
 	endwin();
 	initscr();
 	noecho();
@@ -199,7 +211,7 @@ void pass(){
 	}
 	
 	// Words from http://www-01.sil.org/linguistics/wordlists/english/wordlist/wordsEn.txt
-		char *wordArr[] = {
+		char* wordArr[] = {
 "AAHED", "ABACI", "ABACK", "ABAFT", "ABASE", "ABASH", "ABATE", 
 "ABBES", "ABBEY", "ABBOT", "ABEAM", "ABETS", "ABHOR", "ABIDE", 
 "ABLER", "ABLES", "ABNER", "ABODE", "ABOIL", "ABORT", "ABOUT", 
@@ -1290,7 +1302,7 @@ void pass(){
 		getyx(stdscr,y,x);
 		
 		// Get allowances left
-		mvprintw(1,0,"                              ");
+		mvprintw(1,0,"                                 ");
 		mvprintw(3,0,"                              ");
 		switch(allowances){
 			case 1: mvprintw(3,0,"1 ATTEMPT(S) LEFT: *");
@@ -1598,7 +1610,7 @@ void pass(){
 						mvprintw(19,41+i,"%c",output[i]);
 					}
 					refresh();
-					usleep(3000000);
+					SLEEP(3000000);
 					endwin();
 					exit(0);
 					
