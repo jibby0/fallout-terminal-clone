@@ -4,6 +4,8 @@
 // @author Josh Bicking <josh1147582>
 // // // // // // // // // // // // // // // // // // // // // // // 
 
+#define _BSD_SOURCE /* for unistd.h */
+
 #ifdef _WIN32
 #   include <Windows.h>
 #   include <curses.h>
@@ -16,11 +18,11 @@
 #   include <unistd.h>
 #   define SLEEP(delay) usleep(delay)
 #endif
-// Thanks to /u/aftli_work for the file consolidation suggestion!
 
 #include <stdlib.h>
 #include <time.h>
 #include "print.h"
+#include "FalloutTerminal.h"
 
 void slowPrint(char arr[], int size, int line){
     for(int i=0; i<size; i++){  
@@ -35,7 +37,7 @@ void slowPrint(char arr[], int size, int line){
         }
         SLEEP(20000);
     }
-    return 0;
+    return;
 }
 
 void slowType(char arr[], int size, int line){
@@ -48,7 +50,7 @@ void slowType(char arr[], int size, int line){
         }
         SLEEP(70000);
     }
-    return 0;
+    return;
 }
 
 void passPrint(char arr[], int size, int line){

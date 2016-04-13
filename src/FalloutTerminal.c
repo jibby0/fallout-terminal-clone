@@ -1,3 +1,5 @@
+#define _BSD_SOURCE /* for unistd.h */
+
 // Win32 builds require Windows.h for Sleep(milliseconds).
 // They also require curses.h for the PDCurses library.
 #ifdef _WIN32
@@ -12,16 +14,14 @@
 #   include <unistd.h>
 #   define SLEEP(delay) usleep(delay)
 #endif
-// Thanks to /u/aftli_work for the file consolidation suggestion!
 
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include "print.h"
 
 #define OFFSET_LEFT 0
 #define OFFSET_RIGHT 20
-
-#define _POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700
 
 /// Plays the introduction sequence. 
 ///
@@ -30,7 +30,7 @@ void intro(){
     SLEEP(250000);
     char arr[] = "WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK";
     
-    slowPrint(arr,sizeof(arr), 0);
+    slowPrint(arr,strlen(arr), 0);
 
     move(1, 0);
     refresh();
@@ -41,47 +41,47 @@ void intro(){
     SLEEP(1500000);
 
     char arr2[] = "SET TERMINAL/INQUIRE";
-    slowType(arr2,sizeof(arr2), 2);
+    slowType(arr2,strlen(arr2), 2);
     
 
     char arr3[] = "RIT-V300";
-    slowPrint(arr3,sizeof(arr3), 4);
+    slowPrint(arr3,strlen(arr3), 4);
 
     mvprintw(6,0,"%c", '>');
     refresh();
     SLEEP(1500000);
     char arr4[] = "SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F";
-    slowType(arr4,sizeof(arr4),6);
+    slowType(arr4,strlen(arr4),6);
     
     mvprintw(7,0,"%c", '>');
     refresh();
     SLEEP(1500000);
     char arr5[] = "SET HALT RESTART/MAINT";
-    slowType(arr5,sizeof(arr5),7);
+    slowType(arr5,strlen(arr5),7);
     
     char arr6[] = "Initializing Robco Industries(TM) Boot Agent v2.3.0";
-    slowPrint(arr6,sizeof(arr6),9);
+    slowPrint(arr6,strlen(arr6),9);
 
     char arr7[] = "RBIOS-4.02.08.00 53EE5.E7.E8";
-    slowPrint(arr7,sizeof(arr7),10);
+    slowPrint(arr7,strlen(arr7),10);
 
     char arr8[] = "Copyright 2201-22-3 Robco Ind.";
-    slowPrint(arr8,sizeof(arr8),11);
+    slowPrint(arr8,strlen(arr8),11);
 
     char arr9[] = "Uppermem: 64 KB";
-    slowPrint(arr9,sizeof(arr9),12);
+    slowPrint(arr9,strlen(arr9),12);
 
     char arr10[] = "Root (5A8)";
-    slowPrint(arr10,sizeof(arr10),13);
+    slowPrint(arr10,strlen(arr10),13);
 
     char arr11[] = "Maintenance Mode";
-    slowPrint(arr11,sizeof(arr11),14);
+    slowPrint(arr11,strlen(arr11),14);
 
     mvprintw(16,0,"%c",'>');
     refresh();
     SLEEP(1500000);
     char arr12[] = "RUN DEBUG/ACCOUNTS.F";
-    slowType(arr12,sizeof(arr12),16);
+    slowType(arr12,strlen(arr12),16);
     move(16,0);
     refresh();
     SLEEP(50000);
@@ -96,6 +96,14 @@ int currentCharContains(char arr[],char c){
     return 0;
 }
 
+int getCharLoc(int y, int x){
+    /* Left side */
+    if(x<19)
+        return 12*(y-5)+(x-7);
+    /* Right side */
+    else
+        return 12*(y-5)+(x-27+204);
+}
 
 void pass(){
     static const int BIGSTRING_SIZE = 408;
@@ -118,12 +126,12 @@ void pass(){
     
     /* Intro text */
     char prompt[] = "ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL";
-    passPrint(prompt,sizeof(prompt),0);
+    passPrint(prompt,strlen(prompt),0);
     
     char prompt2[] = "ENTER PASSWORD NOW";
-    passPrint(prompt2, sizeof(prompt2), 1);
+    passPrint(prompt2, strlen(prompt2), 1);
     char prompt3[] = "4 ATTEMPT(S) LEFT: * * * *";
-    passPrint(prompt3, sizeof(prompt3), 3);
+    passPrint(prompt3, strlen(prompt3), 3);
     
     /* Generate the hex values on the left sides */
     int arbHex;
@@ -428,7 +436,7 @@ void pass(){
             "FACER", "FACES", "FACET", "FACIA", "FACIE", "FACTO", "FACTS", 
             "FADDY", "FADED", "FADER", "FADES", "FAERY", "FAGOT", "FAILS", 
             "FAINT", "FAIRE", "FAIRS", "FAIRY", "FAITH", "FAITS", "FAKED", 
-            "FAKER", "FAKES", "FAKIR", "FALLS", "0", "FAMED", "FAMES", 
+            "FAKER", "FAKES", "FAKIR", "FALLS", "FAMED", "FAMES", 
             "FANCY", "FANES", "FANGS", "FANNY", "FAQIR", "FARAD", "FARCE", 
             "FARCY", "FARDS", "FARED", "FARER", "FARES", "FARMS", "FAROS", 
             "FARTS", "FASTS", "FATAL", "FATED", "FATES", "FATLY", "FATSO", 
@@ -1032,8 +1040,8 @@ void pass(){
             "TRIBE", "TRICE", "TRICK", "TRIED", "TRIER", "TRIES", "TRILL", 
             "TRIMS", "TRINE", "TRIOS", "TRIPE", "TRIPS", "TRITE", "TRODE", 
             "TROIS", "TROLL", "TROMP", "TROOP", "TROPE", "TROTH", "TROTS", 
-            "TROUT", "TROVE", "TROWS", "TROYS", "TRUCE", "TRUCK", "1D", 
-            "1R", "1S", "TRULL", "TRULY", "TRUMP", "TRUNK", "TRUSS", 
+            "TROUT", "TROVE", "TROWS", "TROYS", "TRUCE", "TRUCK",  
+            "TRULL", "TRULY", "TRUMP", "TRUNK", "TRUSS", 
             "TRUST", "TRUTH", "TRYST", "TSARS", "TSKED", "TSUBA", "TUBAL", 
             "TUBAS", "TUBBY", "TUBED", "TUBER", "TUBES", "TUCKS", "TUDOR", 
             "TUFAS", "TUFFS", "TUFTS", "TUFTY", "TULES", "TULIP", "TULLE", 
@@ -1219,8 +1227,8 @@ void pass(){
     
     mvprintw(21,40,"%c",'>');
     move(5,7);
-    char currentChar[12]; /* Max length chrrentChar could be (total possible length of a bracket trick) */
-    currentChar[0] = mvinch(5,7);
+    char currentChar[12]; /* Max length currentChar could be (total possible length of a bracket trick) */
+    currentChar[0] = (char)mvinch(5,7);
     
     // TODO Clear any key presses that may have occurred during this loading sequence 
 
@@ -1272,7 +1280,7 @@ void pass(){
         if(needsClearing){
             charCounter = 0;
             while(charCounter!=bracketLength+1){
-                currentChar[charCounter] = mvinch(origy,charStart+charCounter);
+                currentChar[charCounter] = (char)mvinch(origy,charStart+charCounter);
                 mvprintw(origy,charStart+charCounter,"%c",(int)currentChar[charCounter]);
                 charCounter++;
             }
@@ -1282,9 +1290,8 @@ void pass(){
         }
         if(needsClearingMultiLine){
             charCounter = 0;
-            int timesDown = 0;
             while(charCounter!=wordLength){
-                currentChar[charCounter] = mvinch(starty,startx);
+                currentChar[charCounter] = (char)mvinch(starty,startx);
                 mvprintw(starty,startx,"%c",currentChar[charCounter]);
                 charCounter++;
                 startx++;
@@ -1300,7 +1307,7 @@ void pass(){
         /* Clear the char array */
         for(i=0;i<12;i++)
             currentChar[i]=' ';
-        currentChar[0] = mvinch(y,x);
+        currentChar[0] = (char) (char)mvinch(y,x);
         /* Set the new y and x to origy and origx */
         origy = y;
         origx = x;
@@ -1310,7 +1317,7 @@ void pass(){
             bracketLength=0;
             while(x!=18 && x!=38){
                 x++;
-                endBracket = mvinch(y,x);
+                endBracket = (char)mvinch(y,x);
                 bracketLength++;
             if((endBracket == ')' && currentChar[0]=='(') || 
                 (endBracket == '>' && currentChar[0]=='<') || 
@@ -1320,7 +1327,7 @@ void pass(){
                     attron(A_STANDOUT);
                     charCounter = 0;
                     while(1){
-                        currentChar[charCounter] = mvinch(y,charStart+charCounter);
+                        currentChar[charCounter] = (char)mvinch(y,charStart+charCounter);
                         mvprintw(y,charStart+charCounter,"%c",currentChar[charCounter]);
                         if(currentChar[charCounter] == endBracket)
                             break;
@@ -1376,7 +1383,7 @@ void pass(){
             attron(A_STANDOUT);
             charCounter = 0;
             while(charCounter!=wordLength){
-                currentChar[charCounter] = mvinch(tempy,tempx);
+                currentChar[charCounter] = (char)mvinch(tempy,tempx);
                 mvprintw(tempy,tempx,"%c",currentChar[charCounter]);
                 charCounter++;
                 tempx++;
@@ -1582,15 +1589,6 @@ void pass(){
     exit(0);
 }
 
-
-int getCharLoc(int y, int x){
-    /* Left side */
-    if(x<19)
-        return 12*(y-5)+(x-7);
-    /* Right side */
-    else
-        return 12*(y-5)+(x-27+204);
-}
 
 int main(){
 
