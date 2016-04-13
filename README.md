@@ -58,6 +58,8 @@ Plans for the Future
 		launch another program after it's done
 	Possible mouse support?
 
+Thanks to:
+    /u/aftli_work for suggesting macros (before I knew what they were)
 
 
 I do not own the idea for this game, nor do I claim any ownership
