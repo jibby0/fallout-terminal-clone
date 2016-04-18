@@ -19,5 +19,5 @@ print.o: print.c
 pass.o: pass.c print.c
 
 clean:
-	rm *.o FalloutTerminal
+	rm -f *.o FalloutTerminal
 	#TODO conditional for Windows
