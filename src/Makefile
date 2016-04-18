@@ -7,7 +7,7 @@ else
 	CFLAGS += -lncurses
 endif
 
-FalloutTerminal: main.o print.o intro.o pass.o fileParse.o
+FalloutTerminal: main.o print.o intro.o pass.o wordParse.o
 	$(CC) -o $@ $^ $(CFLAGS) 
 
 main.o: main.c intro.c pass.c
@@ -18,7 +18,7 @@ print.o: print.c
 
 pass.o: pass.c print.c
 
-fileParse.o: fileParse.c
+wordParse.o: wordParse.c
 
 clean:
 	rm -f *.o FalloutTerminal

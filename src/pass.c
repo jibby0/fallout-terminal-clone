@@ -19,7 +19,7 @@
 
 #include "pass.h"
 #include "print.h"
-#include "fileParse.h"
+#include "wordParse.h"
 #include "intro.h"
 
 #define OFFSET_LEFT 0
@@ -84,10 +84,9 @@ void pass(){
 
     char ** wordArr = getWordArr();
     
-    // TODO get these values from the file
-    static const int WORD_POOL_SIZE = 6919; 
-    static const int WORD_SIZE = 5;
-    static const int WORDS_CHOSEN = 15; 
+    int WORD_POOL_SIZE = getNumWords(); 
+    int WORD_SIZE = getWordLength();
+    int WORDS_CHOSEN = getWordsToChoose(); 
     
 
     /* Place a word in the string total times, making sure it doesn't 

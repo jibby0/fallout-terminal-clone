@@ -6,11 +6,25 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include "intro.h"
 #include "pass.h"
-#include "fileParse.h"
+#include "wordParse.h"
 
 int main(int argc, char * argv[]){
+
+    if(argc > 1 && !strcmp(argv[1], "--help")){
+        printf("Usage: %s [--DIFFICULTY]\n\n[--DIFFICULTY] is an optional argument"
+                " that uses built in words instead\nof words specifed in the config"
+                " file. Options are:\n\n"
+                "--veryEasy,\t10 words, 5 letters per word (default)\n\n"
+                "--easy,\t\t11 words, 7 letters per word\n\n"
+                "--average,\t14 words, 9 letters per word\n\n"
+                "--hard,\t\t7 words, 11 letters per word\n\n"
+                "--veryHard,\t13 words, 12 letters per word\n\n"
+                , argv[0]);
+        exit(0);
+    }
 
     srand ( (unsigned)time(NULL) );
     initscr();
@@ -27,15 +41,38 @@ int main(int argc, char * argv[]){
 
     FILE *fp = NULL;
 
-    if(argc > 1)
-        fp = fopen(argv[1], "r");
+    if(argc > 1){
+        if(!strcmp(argv[1], "--easy")) {
+           setEasy();
+        } 
+        else if(!strcmp(argv[1], "--average")) {
+           setAverage();
+        } 
+        else if(!strcmp(argv[1], "--hard")) {
+           setHard();
+        } 
+        else if(!strcmp(argv[1], "--veryHard")) {
+           setVeryHard();
+        } 
+        else {
+            setVeryEasy();
+        }
+    }
+    else {    
 
-    readFile(fp);
+        fp = fopen("FalloutTerminal.cfg", "r");
+
+        readFile(fp);
+    }
+
 
     intro();
     pass();
 
-    
+    if(fp != NULL) {
+        fclose(fp);
+    }
+
     return 0;
 }
 
