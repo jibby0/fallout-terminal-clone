@@ -1,7 +1,5 @@
 #define _BSD_SOURCE /* for unistd.h */
 
-// Win32 builds require Windows.h for Sleep(milliseconds).
-// They also require curses.h for the PDCurses library.
 #ifdef _WIN32
 #   include <Windows.h>
 #   include <curses.h>
@@ -15,67 +13,17 @@
 #   define SLEEP(delay) usleep(delay)
 #endif
 
-#include <stdlib.h>
-#include <time.h>
 #include <string.h>
+#include <stdlib.h>
+
+#include "pass.h"
 #include "print.h"
 
 #define OFFSET_LEFT 0
 #define OFFSET_RIGHT 20
+#define BIGSTRING_SIZE 408
 
-/// Plays the introduction sequence. 
-///
-void intro(){
-    clear();
-    SLEEP(250000);
-    
-    slowPrint("WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK",strlen("WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK"), 0);
-
-    move(1, 0);
-    refresh();
-    SLEEP(30000);
-    mvprintw(2,0,"%c", '>');
-    move(2,1);
-    refresh();
-    SLEEP(1500000);
-
-    slowType("SET TERMINAL/INQUIRE",strlen("SET TERMINAL/INQUIRE"), 2);
-
-    slowPrint("RIT-V300",strlen("RIT-V300"), 4);
-
-    mvprintw(6,0,"%c", '>');
-    refresh();
-    SLEEP(1500000);
-    slowType("SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F",strlen("SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F"),6);
-    
-    mvprintw(7,0,"%c", '>');
-    refresh();
-    SLEEP(1500000);
-    slowType("SET HALT RESTART/MAINT",strlen("SET HALT RESTART/MAINT"),7);
-    
-    slowPrint("Initializing Robco Industries(TM) Boot Agent v2.3.0",strlen("Initializing Robco Industries(TM) Boot Agent v2.3.0"),9);
-
-    slowPrint("RBIOS-4.02.08.00 53EE5.E7.E8",strlen("RBIOS-4.02.08.00 53EE5.E7.E8"),10);
-
-    slowPrint("Copyright 2201-22-3 Robco Ind.",strlen("Copyright 2201-22-3 Robco Ind."),11);
-
-    slowPrint( "Uppermem: 64 KB",strlen("Uppermem: 64 KB"),12);
-
-    slowPrint("Root (5A8)",strlen("Root (5A8)"),13);
-
-    slowPrint("Maintenance Mode",strlen("Maintenance Mode"),14);
-
-    mvprintw(16,0,"%c",'>');
-    refresh();
-    SLEEP(1500000);
-    slowType("RUN DEBUG/ACCOUNTS.F",strlen("RUN DEBUG/ACCOUNTS.F"),16);
-    move(16,0);
-    refresh();
-    SLEEP(50000);
-}
-
-
-int currentCharContains(char arr[],char c){
+static int currentCharContains(char arr[],char c){
     int i;
     for(i=0; i<12; i++)
         if(arr[i]==c)
@@ -83,7 +31,7 @@ int currentCharContains(char arr[],char c){
     return 0;
 }
 
-int getCharLoc(int y, int x){
+static int getCharLoc(int y, int x){
     /* Left side */
     if(x<19)
         return 12*(y-5)+(x-7);
@@ -93,8 +41,6 @@ int getCharLoc(int y, int x){
 }
 
 void pass(){
-    static const int BIGSTRING_SIZE = 408;
-
 
     /* Start a new screen where nodelay is false */
     erase();
@@ -1574,29 +1520,4 @@ void pass(){
 
     endwin();
     exit(0);
-}
-
-
-int main(){
-
-    // TODO  get input from args here. Pass it to pass
-
-    srand ( (unsigned)time(NULL) );
-    initscr();
-    noecho();
-    refresh();
-    attron(A_BOLD);
-    nodelay(stdscr, 1);
-    if(has_colors() == 1){
-        /* Colors */
-        start_color();
-        init_pair(1,COLOR_GREEN,COLOR_BLACK);
-        attron(COLOR_PAIR(1));
-    }
-
-    intro();
-    pass();
-
-    
-    return 0;
 }

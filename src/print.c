@@ -22,7 +22,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "print.h"
-#include "FalloutTerminal.h"
+#include "pass.h"
 
 void slowPrint(char arr[], int size, int line){
     for(int i=0; i<size; i++){  
