@@ -28,9 +28,8 @@
 void intro(){
     clear();
     SLEEP(250000);
-    char arr[] = "WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK";
     
-    slowPrint(arr,strlen(arr), 0);
+    slowPrint("WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK",strlen("WELCOME TO ROBCO INDUSTRIES (TM) TERMLINK"), 0);
 
     move(1, 0);
     refresh();
@@ -40,48 +39,36 @@ void intro(){
     refresh();
     SLEEP(1500000);
 
-    char arr2[] = "SET TERMINAL/INQUIRE";
-    slowType(arr2,strlen(arr2), 2);
-    
+    slowType("SET TERMINAL/INQUIRE",strlen("SET TERMINAL/INQUIRE"), 2);
 
-    char arr3[] = "RIT-V300";
-    slowPrint(arr3,strlen(arr3), 4);
+    slowPrint("RIT-V300",strlen("RIT-V300"), 4);
 
     mvprintw(6,0,"%c", '>');
     refresh();
     SLEEP(1500000);
-    char arr4[] = "SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F";
-    slowType(arr4,strlen(arr4),6);
+    slowType("SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F",strlen("SET FILE/PROTECTION=OWNER:RWED ACCOUNTS.F"),6);
     
     mvprintw(7,0,"%c", '>');
     refresh();
     SLEEP(1500000);
-    char arr5[] = "SET HALT RESTART/MAINT";
-    slowType(arr5,strlen(arr5),7);
+    slowType("SET HALT RESTART/MAINT",strlen("SET HALT RESTART/MAINT"),7);
     
-    char arr6[] = "Initializing Robco Industries(TM) Boot Agent v2.3.0";
-    slowPrint(arr6,strlen(arr6),9);
+    slowPrint("Initializing Robco Industries(TM) Boot Agent v2.3.0",strlen("Initializing Robco Industries(TM) Boot Agent v2.3.0"),9);
 
-    char arr7[] = "RBIOS-4.02.08.00 53EE5.E7.E8";
-    slowPrint(arr7,strlen(arr7),10);
+    slowPrint("RBIOS-4.02.08.00 53EE5.E7.E8",strlen("RBIOS-4.02.08.00 53EE5.E7.E8"),10);
 
-    char arr8[] = "Copyright 2201-22-3 Robco Ind.";
-    slowPrint(arr8,strlen(arr8),11);
+    slowPrint("Copyright 2201-22-3 Robco Ind.",strlen("Copyright 2201-22-3 Robco Ind."),11);
 
-    char arr9[] = "Uppermem: 64 KB";
-    slowPrint(arr9,strlen(arr9),12);
+    slowPrint( "Uppermem: 64 KB",strlen("Uppermem: 64 KB"),12);
 
-    char arr10[] = "Root (5A8)";
-    slowPrint(arr10,strlen(arr10),13);
+    slowPrint("Root (5A8)",strlen("Root (5A8)"),13);
 
-    char arr11[] = "Maintenance Mode";
-    slowPrint(arr11,strlen(arr11),14);
+    slowPrint("Maintenance Mode",strlen("Maintenance Mode"),14);
 
     mvprintw(16,0,"%c",'>');
     refresh();
     SLEEP(1500000);
-    char arr12[] = "RUN DEBUG/ACCOUNTS.F";
-    slowType(arr12,strlen(arr12),16);
+    slowType("RUN DEBUG/ACCOUNTS.F",strlen("RUN DEBUG/ACCOUNTS.F"),16);
     move(16,0);
     refresh();
     SLEEP(50000);
