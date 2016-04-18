@@ -8,10 +8,9 @@
 #include <time.h>
 #include "intro.h"
 #include "pass.h"
+#include "fileParse.h"
 
-int main(){
-
-    // TODO  get input from args here. Pass it to pass
+int main(int argc, char * argv[]){
 
     srand ( (unsigned)time(NULL) );
     initscr();
@@ -26,8 +25,17 @@ int main(){
         attron(COLOR_PAIR(1));
     }
 
+    FILE *fp = NULL;
+
+    if(argc > 1)
+        fp = fopen(argv[1], "r");
+
+    readFile(fp);
+
     intro();
     pass();
+
     
     return 0;
 }
+
