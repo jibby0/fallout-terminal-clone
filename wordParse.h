@@ -5,6 +5,8 @@
 
 void readWordsFromFile(FILE *fp);
 
+void readLaunches(FILE* fp);
+
 void setVeryEasy();
 
 void setEasy();
@@ -23,6 +25,10 @@ int getWordsToChoose();
 
 int getWordLength();
 
-void freeWordArr();
+char * getVictoryProg();
+
+char * getCompleteProg();
+
+void freeAll();
 
 #endif

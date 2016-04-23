@@ -22,13 +22,21 @@ int main(int argc, char * argv[]){
                 "--average,\t14 words, 9 letters per word\n\n"
                 "--hard,\t\t7 words, 11 letters per word\n\n"
                 "--veryHard,\t13 words, 12 letters per word\n\n"
+                "If no difficulty is provided, this program will read input "
+                "from the FalloutTerminal.cfg file. If this file cannot be found "
+                "or the configuration is invalid, it will default to Very Easy." 
                 , argv[0]);
         exit(0);
     }
 
     FILE *fp = NULL;
 
+    fp = fopen("FalloutTerminal.cfg", "r");
+
     if(argc > 1){
+        if(!strcmp(argv[1], "--veryEasy")) {
+            setVeryEasy();
+        }
         if(!strcmp(argv[1], "--easy")) {
            setEasy();
         } 
@@ -42,16 +50,15 @@ int main(int argc, char * argv[]){
            setVeryHard();
         } 
         else {
-            setVeryEasy();
+            printf("Invalid command. Type \"%s --help\" for usage and a list of commands.\n", argv[0]);
+            exit(EXIT_FAILURE);
         }
     }
     else {    
-
-        fp = fopen("FalloutTerminal.cfg", "r");
-
         readWordsFromFile(fp);
     }
 
+    readLaunches(fp);
 
     srand ( (unsigned)time(NULL) );
     initscr();
@@ -71,9 +78,7 @@ int main(int argc, char * argv[]){
     intro();
     pass();
 
-    if(fp != NULL) {
-        fclose(fp);
-    }
+    fclose(fp);
 
     return 0;
 }

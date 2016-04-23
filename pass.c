@@ -218,7 +218,11 @@ void pass(){
                     mvprintw(10,20,"TERMINAL LOCKED");
                     mvprintw(12,12,"PLEASE CONTACT AN ADMINISTRATOR");
                     refresh();
-                    getch();
+                    SLEEP(3000000);
+                    endwin();
+                    if(strlen(getCompleteProg())> 2)
+                        system(getCompleteProg());
+                    freeAll();
                     exit(EXIT_FAILURE);
         }
         refresh();
@@ -521,6 +525,12 @@ void pass(){
                     refresh();
                     SLEEP(3000000);
                     endwin();
+                    if(strlen(getVictoryProg()) > 2)
+                        system(getVictoryProg());
+                    else if(strlen(getCompleteProg())> 2)
+                        system(getCompleteProg());
+ 
+                    freeAll();
                     exit(EXIT_SUCCESS);
                     
                 }
@@ -549,6 +559,6 @@ void pass(){
     }
 
     endwin();
-    freeWordArr();
+    freeAll();
     exit(EXIT_SUCCESS);
 }

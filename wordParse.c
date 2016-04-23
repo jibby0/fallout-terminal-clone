@@ -20,6 +20,9 @@ int numWords;
 
 int wordsToChoose;
 
+char * victoryProg;
+char * completeProg;
+
 void readWordsFromFile(FILE* fp){
 
     if(fp == NULL) {
@@ -99,6 +102,41 @@ void readWordsFromFile(FILE* fp){
         free(wordArr);
         setVeryEasy();
     }
+
+    free(buf);
+}
+
+void readLaunches(FILE* fp){
+    rewind(fp);
+
+    if(fp == NULL){
+        return;
+    }
+
+    char * buf;
+    size_t n = 0;
+
+    while(getline(&buf, &n, fp)){
+
+        // Remove the \n at the end of buff
+        buf[strlen(buf)-1] = '\0';
+
+        // Search for :LAUNCH_ON_*
+        if(!strncmp(buf, ":LAUNCH_ON_VICTORY=", 19) && victoryProg == NULL) {
+           victoryProg = malloc(sizeof(char) * strlen(buf)-19+1); 
+           strcpy(victoryProg, buf+19);
+        }
+
+        if(!strncmp(buf, ":LAUNCH_ON_COMPLETE=", 20) && completeProg == NULL) {
+           completeProg = malloc(sizeof(char) * strlen(buf)-20+1); 
+           strcpy(completeProg, buf+20);
+           break;
+        }
+
+    }
+
+    free(buf);
+
 }
 
 void setWordArr(char *words[]){
@@ -327,8 +365,22 @@ int getWordLength() {
     return strlen(*wordArr);
 }
 
-void freeWordArr() {
+char * getVictoryProg() {
+    if(victoryProg == NULL)
+        return "";
+    return victoryProg;
+}
+
+char * getCompleteProg() {
+    if(completeProg == NULL)
+        return "";
+    return completeProg;
+}
+
+void freeAll() {
     free(wordArr);
+    free(victoryProg);
+    free(completeProg);
 }
 
 // end
