@@ -245,6 +245,10 @@ void pass(){
                 if(startx==19 || startx==39){
                     startx-=12;
                     starty++;
+                    if(starty == 22) {
+                        starty = 5;
+                        startx+=20;
+                    }
                 }
             }
             mvprintw(21,41,"            ",currentChar[0]);
@@ -307,6 +311,10 @@ void pass(){
                 if(tempx==6 || tempx==26){
                     tempx+=12;
                     tempy--;
+                    if(tempy == 4){
+                        tempy = 21;
+                        tempx-=20;
+                    }
                 }
             }
             startx = tempx;
@@ -320,6 +328,10 @@ void pass(){
                 if(tempx==19 || tempx==39){
                     tempx-=12;
                     tempy++;
+                    if(tempy == 22) {
+                        tempy = 5;
+                        tempx+=20;
+                    }
                 }
             }
             /* Now currentChar is the String, and charCounter+1 is the length */
@@ -337,6 +349,10 @@ void pass(){
                 if(tempx==19 || tempx==39){
                     tempx-=12;
                     tempy++;
+                    if(tempy == 22) {
+                        tempy = 5;
+                        tempx+=20;
+                    }
                 }
             }
                     attroff(A_STANDOUT);
