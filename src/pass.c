@@ -93,6 +93,10 @@ void pass(){
        overwrite another word or get placed right next to it */
     int place;                      /* Current place for checking and word insertion*/
     int takenWords[WORDS_CHOSEN];   /* Words already placed in bigString */
+
+    for(int i=0; i<WORDS_CHOSEN; i++)
+        takenWords[i] = 0;
+
     int valid;                      /* 1 if selected word is not already used and 
                                        does not conflict with other words, 0 otherwise */
     int pickedWord = 0;             /* Indicate whether or not we've chosen the correct word */
@@ -108,21 +112,20 @@ void pass(){
         for(i=place-1; i<place+WORD_SIZE+1; i++){
             if(bigString[i] > 64 && bigString[i] < 91){
                 valid = 0;
+                break;
             }
         }
 
 
         if(valid){
             int wordLoc = rand()%WORD_POOL_SIZE;
-            
-            /* Check if the word selected has already been selected */
-            for(i=0;i<=WORDS_CHOSEN-left;i++)
-            {
-                if(wordLoc == takenWords[i])
-                    valid = 0;
-            }
+
+            if(takenWords[wordLoc])
+                valid=0;
 
             if(valid){
+
+                takenWords[wordLoc] = 1;
 
                 /* Add the word to bigString */
                 for(i=place; i<place+WORD_SIZE; i++){
