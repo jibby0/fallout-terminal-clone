@@ -219,7 +219,7 @@ void pass(){
                     mvprintw(12,12,"PLEASE CONTACT AN ADMINISTRATOR");
                     refresh();
                     getch();
-                    exit(0);
+                    exit(EXIT_FAILURE);
         }
         refresh();
         move(y,x);
@@ -521,7 +521,7 @@ void pass(){
                     refresh();
                     SLEEP(3000000);
                     endwin();
-                    exit(0);
+                    exit(EXIT_SUCCESS);
                     
                 }
                 else{
@@ -549,5 +549,6 @@ void pass(){
     }
 
     endwin();
-    exit(0);
+    freeWordArr();
+    exit(EXIT_SUCCESS);
 }

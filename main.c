@@ -26,19 +26,6 @@ int main(int argc, char * argv[]){
         exit(0);
     }
 
-    srand ( (unsigned)time(NULL) );
-    initscr();
-    noecho();
-    refresh();
-    attron(A_BOLD);
-    nodelay(stdscr, 1);
-    if(has_colors() == 1){
-        /* Colors */
-        start_color();
-        init_pair(1,COLOR_GREEN,COLOR_BLACK);
-        attron(COLOR_PAIR(1));
-    }
-
     FILE *fp = NULL;
 
     if(argc > 1){
@@ -62,8 +49,23 @@ int main(int argc, char * argv[]){
 
         fp = fopen("FalloutTerminal.cfg", "r");
 
-        readFile(fp);
+        readWordsFromFile(fp);
     }
+
+
+    srand ( (unsigned)time(NULL) );
+    initscr();
+    noecho();
+    refresh();
+    attron(A_BOLD);
+    nodelay(stdscr, 1);
+    if(has_colors() == 1){
+        /* Colors */
+        start_color();
+        init_pair(1,COLOR_GREEN,COLOR_BLACK);
+        attron(COLOR_PAIR(1));
+    }
+
 
 
     intro();

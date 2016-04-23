@@ -3,7 +3,7 @@
 #ifndef FILEPARSE_H
 #define FILEPARSE_H
 
-void readFile(FILE *fp);
+void readWordsFromFile(FILE *fp);
 
 void setVeryEasy();
 
@@ -22,5 +22,7 @@ int getNumWords();
 int getWordsToChoose();
 
 int getWordLength();
+
+void freeWordArr();
 
 #endif
