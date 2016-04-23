@@ -5,7 +5,7 @@
 // @author Joshua Bicking <josh1147582>
 // // // // // // // // // // // // // // // // // // // // // // // 
 
-#define _GNU_SOURCE /* for getline() */
+#include "getline.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
