@@ -1,3 +1,6 @@
+This is a list of words the game chooses from when the config is
+overridden/invalid.
+
 Very Easy
     5 letters
     10 words

@@ -28,4 +28,8 @@ getline.o: getline.c
 getdelim.o: getdelim.c
 
 clean:
+ifeq ($(OS),Windows_NT)
+	del *.o FalloutTerminal.exe
+else
 	rm -f *.o FalloutTerminal
+endif
