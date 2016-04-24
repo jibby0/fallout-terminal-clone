@@ -189,7 +189,7 @@ void pass(){
     int bracketTricks=0;                /* Total number of bracket tricks used */
     int needsClearing = 0;              /* Whether or not highlights need to be purged */
     int needsClearingMultiLine = 0;     /* Whether or not a multi line highlight needs to be purged */
-    char output[12];                    /* Used for side terminal output */
+    char output[13];                    /* Used for side terminal output */
     int allowances = 4;
     
     while(1){
