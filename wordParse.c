@@ -86,7 +86,7 @@ void readWordsFromFile(FILE* fp){
 
         // Read the word into wordArr
 
-        wordArr = realloc(wordArr, sizeof(char*) * numWords+1);
+        wordArr = realloc(wordArr, sizeof(char*) * (numWords+1));
 
         *(wordArr+numWords) = malloc(sizeof(char) * sizeof(buf));
         strncpy(*(wordArr+numWords),buf, MAX_WORD_SIZE);
