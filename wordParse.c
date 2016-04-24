@@ -23,12 +23,13 @@ char * completeProg;
 
 void readWordsFromFile(FILE* fp){
 
+    // If there's no config file, default to very easy
     if(fp == NULL) {
         setVeryEasy();
         return;
     }
 
-    // Check if FalloutTerminal.cfg is invalid
+    // Check each line for valid words. Stop once launching is reached.
     char * buf;
     size_t n = 0;
     
@@ -92,6 +93,7 @@ void readWordsFromFile(FILE* fp){
         numWords++;
     }
 
+    // If words to choose wasn't specified or found, default to 7
     if(wordsToChoose == 0)
         wordsToChoose = 7; 
 
@@ -105,8 +107,10 @@ void readWordsFromFile(FILE* fp){
 }
 
 void readLaunches(FILE* fp){
+    // Rewind the file
     rewind(fp);
 
+    // If the file doesn't exist, stop
     if(fp == NULL){
         return;
     }
@@ -114,6 +118,7 @@ void readLaunches(FILE* fp){
     char * buf;
     size_t n = 0;
 
+    // Look or the parameters. Stop once LAUNCH_ON_COMPLETE is read.
     while(getline(&buf, &n, fp)){
 
         // Remove the \n at the end of buff
@@ -141,8 +146,7 @@ void setWordArr(char *words[]){
     wordArr = malloc(numWords * sizeof(char*));
 
     for(int i=0; i<numWords; i++) {
-            // TODO replace numWords with wordsize
-            *(wordArr+i) = malloc(sizeof(char) * numWords);
+            *(wordArr+i) = malloc(sizeof(char) * (strlen(words[0])+1));
             strcpy(*(wordArr+i), *(words+i));
     }
 

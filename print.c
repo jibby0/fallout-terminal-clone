@@ -5,14 +5,10 @@
 // // // // // // // // // // // // // // // // // // // // // // // 
 
 #define _BSD_SOURCE /* for unistd.h */
-
 #ifdef _WIN32
 #   include <Windows.h>
 #   include <curses.h>
 #   define SLEEP(delay) Sleep(delay/1000)
-// Unix builds require ncurses.h for the Ncurses library.
-// Unix also requires unistd.h for usleep(microseconds).
-// usleep/1000 = Sleep
 #else
 #   include <ncurses.h>
 #   include <unistd.h>
@@ -21,11 +17,12 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include "print.h"
 #include "pass.h"
 
-void slowPrint(char arr[], int size, int line){
-    for(int i=0; i<size; i++){  
+void slowPrint(char arr[], int line){
+    for(int i=0; (unsigned long)i<strlen(arr); i++){  
         /* Print the current character in the current position. */
         mvprintw(line,i,"%c",arr[i]);
         /* Move the cursor to the next position */
@@ -40,8 +37,8 @@ void slowPrint(char arr[], int size, int line){
     return;
 }
 
-void slowType(char arr[], int size, int line){
-    for(int i=0; i<size; i++){  
+void slowType(char arr[], int line){
+    for(int i=0; (unsigned long)i<strlen(arr); i++){  
         mvprintw(line,i+1,"%c",arr[i]);
         move(line, i+2);
         refresh();
@@ -53,9 +50,8 @@ void slowType(char arr[], int size, int line){
     return;
 }
 
-void passPrint(char arr[], int size, int line){
-    int i;
-    for(i=0; i<size; i++){  
+void passPrint(char arr[], int line){
+    for(int i=0; (unsigned long)i<strlen(arr); i++){  
         mvprintw(line,i,"%c",arr[i]);
         move(line, i+1);
         refresh();

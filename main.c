@@ -1,15 +1,17 @@
 #ifdef _WIN32
+// Windows builds require curses.h for the PDcurses library.
 #   include <curses.h>
 #else
+// Unix builds require ncurses.h for the Ncurses library.
 #   include <ncurses.h>
 #endif
 
 #include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include "intro.h"
-#include "pass.h"
-#include "wordParse.h"
+#include <time.h> /* For making a random seed */
+#include <string.h> /* For strcmp, to identify argv[1] */
+#include "intro.h" /* To launch intro */
+#include "pass.h" /* To launch pass */
+#include "wordParse.h" /* To read the file */
 
 int main(int argc, char * argv[]){
 
@@ -29,10 +31,12 @@ int main(int argc, char * argv[]){
         exit(0);
     }
 
+    // Open the config file
     FILE *fp = NULL;
 
     fp = fopen("FalloutTerminal.cfg", "r");
 
+    // Check if a difficulty arg was given
     if(argc > 1){
         if(!strcmp(argv[1], "--veryEasy")) {
             setVeryEasy();
@@ -54,32 +58,40 @@ int main(int argc, char * argv[]){
             exit(EXIT_FAILURE);
         }
     }
+    // Otherwise, read the file for words
     else {    
         readWordsFromFile(fp);
     }
 
+    // Read what should be launch on completion/victory
     readLaunches(fp);
 
+    // Gen a random seed
     srand ( (unsigned)time(NULL) );
+
+    // Begin curses
     initscr();
     noecho();
     refresh();
     attron(A_BOLD);
     nodelay(stdscr, 1);
+
+    // Check for color support. Start color if it exists.
     if(has_colors() == 1){
-        /* Colors */
         start_color();
         init_pair(1,COLOR_GREEN,COLOR_BLACK);
         attron(COLOR_PAIR(1));
     }
 
-
-
+    // Run intro
     intro();
+
+    // Run pass
     pass();
 
+    // Close the config file
     fclose(fp);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 

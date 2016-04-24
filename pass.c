@@ -1,12 +1,14 @@
-#define _BSD_SOURCE /* for unistd.h */
+// 
+// File: pass.c 
+// pass.c plays the password guessing game
+// @author Josh Bicking <josh1147582>
+// // // // // // // // // // // // // // // // // // // // // // // 
 
+#define _BSD_SOURCE /* for unistd.h */
 #ifdef _WIN32
 #   include <Windows.h>
 #   include <curses.h>
 #   define SLEEP(delay) Sleep(delay/1000)
-// Unix builds require ncurses.h for the Ncurses library.
-// Unix also requires unistd.h for usleep(microseconds).
-// usleep/1000 = Sleep
 #else
 #   include <ncurses.h>
 #   include <unistd.h>
@@ -61,13 +63,11 @@ void pass(){
     }
     
     /* Intro text */
-    char prompt[] = "ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL";
-    passPrint(prompt,strlen(prompt),0);
+    passPrint("ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL",0);
     
-    char prompt2[] = "ENTER PASSWORD NOW";
-    passPrint(prompt2, strlen(prompt2), 1);
-    char prompt3[] = "4 ATTEMPT(S) LEFT: * * * *";
-    passPrint(prompt3, strlen(prompt3), 3);
+    passPrint("ENTER PASSWORD NOW", 1);
+
+    passPrint("4 ATTEMPT(S) LEFT: * * * *", 3);
     
     /* Generate the hex values on the left sides */
     int arbHex;

@@ -3,27 +3,24 @@
 
 /// Print characters onto the screen (not player input).
 /// @param arr  string to print
-/// @param size  size of the string
 /// @param line  line on which to print the string
 ///
-void slowPrint(char arr[], int size, int line);
+void slowPrint(char arr[], int line);
 
 
 /// Print characters onto the screen (player input).
 /// @param arr  string to print
-/// @param size  size of the string
 /// @param line  line on which to print the string
 ///
-void slowType(char arr[], int size, int line);
+void slowType(char arr[], int line);
 
 
 /// Operates the same way as slowPrint, but cannot be interrupted 
 /// by a key press.
 /// @param arr  string to print
-/// @param size  size of the string
 /// @param line  line on which to print the string
 /// 
-void passPrint(char arr[], int size, int line);
+void passPrint(char arr[], int line);
 
 
 /// Checks if a key has been pressed. Used to skip the opening sequence and
