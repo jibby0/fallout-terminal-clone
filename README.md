@@ -15,17 +15,21 @@ Building
 	WINDOWS
 
 		Requirements:
-            Have MinGW installed with the following packages:
+            MinGW installed with the following packages:
 			- mingw32-gcc
             - mingw32-pdcurses (dev and dll)
 
-        Once MinGW is installed with support for C/C++ compilation, simply copy
-		everything from src\deps\ into your MinGW folder. This will install the
-		necessary PDcurses libraries.
-		
-		Once this is finished, you can compile by running:
+		Once the above dependencies are satisfied, simply open 
+		a command prompt in the source directory and run:
             make
-        In the source directory.
+
+        If you get an error about gcc not being found, you most
+        likely didn't add MinGW tools to your path. Either do
+        that, or change the line:
+    CC = gcc
+        to read:
+    CC = C:\MinGW\bin
+        (assuming you installed MinGW in that location)
 
 	LINUX
 
@@ -40,14 +44,11 @@ Building
 	OSX
 		
 		Requirements:
-			Xcode Tools
-		
-		Install ncurses on OS X as described here:
-			https://gist.github.com/cnruby/960344
+			Xcode Tools (just run xcode-select --install)
 		
 		Once this is finished, simply open 
-		a terminal in the src/ directory and run:
-		gcc FalloutTerminal.c -lncurses -o FalloutTerminal
+		a terminal in the source directory and run:
+            make
 
 
 TODO list:
@@ -59,7 +60,7 @@ TODO list:
 
 Bugs:
 
-    Fallout 3 doesn't seemt o play nice with the launching. But I haven't
+    Fallout 3 doesn't seem to play nice with the launching. But I haven't
     tested this much. You may just be better off putting this program in a
     batch file.
 
