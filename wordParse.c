@@ -12,8 +12,6 @@
 #include "wordParse.h"
 #include <ctype.h>
 
-#define MAX_WORD_SIZE 12
-
 char **wordArr;
 
 int numWords;
@@ -88,8 +86,8 @@ void readWordsFromFile(FILE* fp){
 
         wordArr = realloc(wordArr, sizeof(char*) * (numWords+1));
 
-        *(wordArr+numWords) = malloc(sizeof(char) * sizeof(buf));
-        strncpy(*(wordArr+numWords),buf, MAX_WORD_SIZE);
+        *(wordArr+numWords) = malloc(sizeof(char) * (strlen(buf)+1));
+        strcpy(*(wordArr+numWords),buf);
 
         numWords++;
     }
@@ -378,6 +376,8 @@ char * getCompleteProg() {
 }
 
 void freeAll() {
+    for(int i=0; i<numWords; i++)
+        free(*(wordArr+i));
     free(wordArr);
     free(victoryProg);
     free(completeProg);
