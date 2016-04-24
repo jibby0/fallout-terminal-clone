@@ -15,17 +15,17 @@ Building
 	WINDOWS
 
 		Requirements:
-			- mingw-g++ (C/C++ support for MinGW)
+            Have MinGW installed with the following packages:
+			- mingw32-gcc
+            - mingw32-pdcurses (dev and dll)
 
 		Once MinGW is installed with support for C/C++ compilation, simply copy
 		everything from src\deps\ into your MinGW folder. This will install the
 		necessary PDcurses libraries.
 		
 		Once this is finished, you can compile by running:
-		gcc FalloutTerminal.c -lpdcurses -o FalloutTerminal.exe
-
-		Make sure you include pdcurses.dll (found in src\dep\bin)
-		with your binary.
+            make
+        In the source directory.
 
 	LINUX
 
@@ -34,15 +34,15 @@ Building
 			- ncurses
 
 		Once the above dependencies are satisfied, simply open 
-		a terminal in the src/ directory and run:
-		gcc FalloutTerminalU.c -lncurses -o FalloutTerminal
+		a terminal in the source directory and run:
+            make
 		
 	OSX
 		
 		Requirements:
 			Xcode Tools
 		
-		Install nurses on OS X as described here:
+		Install ncurses on OS X as described here:
 			https://gist.github.com/cnruby/960344
 		
 		Once this is finished, simply open 
@@ -50,12 +50,10 @@ Building
 		gcc FalloutTerminal.c -lncurses -o FalloutTerminal
 
 
-Plans for the Future
+TODO list:
 
-	ADD a config file that allows you to:
-		change difficulty
-		change whether skips/shortcuts are available
-		launch another program after it's done
+    Custom movement keys
+    Screen centering
 	Possible mouse support?
 
 Thanks to:
@@ -65,6 +63,3 @@ Thanks to:
 I do not own the idea for this game, nor do I claim any ownership
 of Fallout 3 or Fallout: New Vegas. Those copyrights are the 
 property of Bethesda Softworks.
-
-The included PDCurses dependencies are listed as Public Domain,
-and can be found at http://pdcurses.sourceforge.net/
