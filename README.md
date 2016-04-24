@@ -19,7 +19,7 @@ Building
 			- mingw32-gcc
             - mingw32-pdcurses (dev and dll)
 
-		Once MinGW is installed with support for C/C++ compilation, simply copy
+        Once MinGW is installed with support for C/C++ compilation, simply copy
 		everything from src\deps\ into your MinGW folder. This will install the
 		necessary PDcurses libraries.
 		
@@ -56,7 +56,16 @@ TODO list:
     Screen centering
 	Possible mouse support?
 
+
+Bugs:
+
+    Fallout 3 doesn't seemt o play nice with the launching. But I haven't
+    tested this much. You may just be better off putting this program in a
+    batch file.
+
+
 Thanks to:
+
     /u/aftli_work for suggesting macros (before I knew what they were)
 
 
