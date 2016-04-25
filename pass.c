@@ -4,7 +4,7 @@
 // @author Josh Bicking <josh1147582>
 // // // // // // // // // // // // // // // // // // // // // // // 
 
-#define _BSD_SOURCE /* for unistd.h */
+#define _BSD_SOURCE // for unistd.h
 #ifdef _WIN32
 #   include <Windows.h>
 #   include <curses.h>
@@ -37,24 +37,25 @@ static int currentCharContains(char arr[],char c){
 }
 
 static int getCharLoc(int y, int x){
-    /* Left side */
+    // Left side
     if(x<19)
         return 12*(y-5)+(x-7);
-    /* Right side */
+    // Right side
     else
         return 12*(y-5)+(x-27+204);
 }
 
 void pass(){
 
-    /* Start a new screen where nodelay is false */
+
+    // Start a new screen where nodelay is false
     erase();
     endwin();
     initscr();
     noecho();
     refresh();
     attron(A_BOLD);
-    nodelay(stdscr, 0);
+    keypad(stdscr, TRUE);
     if(has_colors() == 1){
         // Colors
         start_color();
@@ -62,23 +63,23 @@ void pass(){
         attron(COLOR_PAIR(1));
     }
     
-    /* Intro text */
+    // Intro text
     passPrint("ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL",0);
     
     passPrint("ENTER PASSWORD NOW", 1);
 
     passPrint("4 ATTEMPT(S) LEFT: * * * *", 3);
     
-    /* Generate the hex values on the left sides */
+    // Generate the hex values on the left sides
     int arbHex;
     arbHex = (rand() % 200) + 63744;
     
-    /* Generate the string to hold the bracket tricks and words */
+    // Generate the string to hold the bracket tricks and words
     char bigString [BIGSTRING_SIZE];
     char randValues[] = "!@#$%^*()_-=+\\|/[]{}?\"\':;,.<>";
     int i;
     for(i=0; i<BIGSTRING_SIZE; i++){
-        /* Fill bigString with random values */
+        // Fill bigString with random values
         bigString[i] = randValues[rand()%29];
     }
 
@@ -89,26 +90,26 @@ void pass(){
     int WORDS_CHOSEN = getWordsToChoose(); 
     
 
-    /* Place a word in the string total times, making sure it doesn't 
-       overwrite another word or get placed right next to it */
-    int place;                      /* Current place for checking and word insertion*/
-    int takenWords[WORDS_CHOSEN];   /* Words already placed in bigString */
+    // Place a word in the string total times, making sure it doesn
+    // overwrite another word or get placed right next to it 
+    int place;                      // Current place for checking and word insertion
+    int takenWords[WORDS_CHOSEN];   // Words already placed in bigString
 
     for(int i=0; i<WORDS_CHOSEN; i++)
         takenWords[i] = 0;
 
-    int valid;                      /* 1 if selected word is not already used and 
-                                       does not conflict with other words, 0 otherwise */
-    int pickedWord = 0;             /* Indicate whether or not we've chosen the correct word */
-    int left = WORDS_CHOSEN;        /* # of words that still need to be chosen */
-    char correctWord[WORD_SIZE];    /* the correct word */
+    int valid;                      // 1 if selected word is not already used a
+                                    // does not conflict with other words, 0 otherwise */
+    int pickedWord = 0;             // Indicate whether or not we've chosen the correct word
+    int left = WORDS_CHOSEN;        // # of words that still need to be chosen
+    char correctWord[WORD_SIZE];    // the correct word
     while(left>0){  
         valid = 1;
         
-        /* Choose a random place in bigString */
+        // Choose a random place in bigString
         place = rand()%(BIGSTRING_SIZE-WORD_SIZE);
         
-        /* Check of any characters there or around it are A-Z */
+        // Check of any characters there or around it are A-Z
         for(i=place-1; i<place+WORD_SIZE+1; i++){
             if(bigString[i] > 64 && bigString[i] < 91){
                 valid = 0;
@@ -127,10 +128,10 @@ void pass(){
 
                 takenWords[wordLoc] = 1;
 
-                /* Add the word to bigString */
+                // Add the word to bigString
                 for(i=place; i<place+WORD_SIZE; i++){
                     bigString[i] = *(*(wordArr+wordLoc)+(i-place));
-                    /* If this is the first word chosen, it is the correct word. */
+                    // If this is the first word chosen, it is the correct word.
                     if(!pickedWord)
                         correctWord[i-place] = *(*(wordArr+wordLoc)+(i-place));
                 }
@@ -141,18 +142,18 @@ void pass(){
     }
     
     
-    /* Create and fill an array to keep track of which brackets were used */
+    // Create and fill an array to keep track of which brackets were used
     int usedBrackets[BIGSTRING_SIZE];
     for(i=0; i<BIGSTRING_SIZE; i++){
         usedBrackets[i] = 1;
     }
     
     
-    /* Print the hex and the filled bigString */
+    // Print the hex and the filled bigString
     char temp[12];  
     int current = 0;
     for(i=5; i<22; i++){
-        /* Print left side */
+        // Print left side
         for(int j=0; j<12; j++){
             temp[j] = bigString[j+current];
         }
@@ -162,7 +163,7 @@ void pass(){
     }
     
     for(i=5; i<22; i++){
-        /* Print right side */
+        // Print right side
         for(int j=0; j<12; j++){
             temp[j] = bigString[j+current];
         }
@@ -174,28 +175,57 @@ void pass(){
     
     mvprintw(21,40,"%c",'>');
     move(5,7);
-    char currentChar[12]; /* Max length currentChar could be (total possible length of a bracket trick) */
+    char currentChar[12]; // Max length currentChar could be (total possible length of a bracket trick)
     currentChar[0] = (char)mvinch(5,7);
-    
-    // TODO Clear any key presses that may have occurred during this loading sequence 
 
-    int y,x,origy,origx,starty,startx;  /* values that keep track of current yx locations, and original ones */
-    int wordLength;                     /* How long a word is */
-    int charStart;                      /* where character counting starts for brackets */
-    char keyPress;                      /* key pressed by user */
-    int charCounter;                    /* counts currentChar - used for incrementing currentChar to print or change it */
-    int bracketLength;                  /* length of a bracket trick */
-    char endBracket;                    /* the end bracket that corresponds to currentChar[0]; */
-    int bracketTricks=0;                /* Total number of bracket tricks used */
-    int needsClearing = 0;              /* Whether or not highlights need to be purged */
-    int needsClearingMultiLine = 0;     /* Whether or not a multi line highlight needs to be purged */
-    char output[13];                    /* Used for side terminal output */
+    int y,x,origy,origx,starty,startx;  // values that keep track of current yx locations, and original ones
+    int wordLength;                     // How long a word is
+    int charStart;                      // where character counting starts for brackets
+    int keyPress;                      // key pressed by user
+    int charCounter;                    // counts currentChar - used for incrementing currentChar to print or change it
+    int bracketLength;                  // length of a bracket trick
+    char endBracket;                    // the end bracket that corresponds to currentChar[0];
+    int bracketTricks=0;                // Total number of bracket tricks used
+    int needsClearing = 0;              // Whether or not highlights need to be pur
+    int needsClearingMultiLine = 0;     // Whether or not a multi line highlight needs to be purged
+    char output[13];                    // Used for side terminal output
     int allowances = 4;
     
+
+    // Get the key config
+    int GO_LEFT, GO_RIGHT, GO_DOWN, GO_UP;
+    switch(getKeyConfig()){
+        case ARROWS: 
+            GO_LEFT = KEY_LEFT;
+            GO_RIGHT = KEY_RIGHT;
+            GO_UP = KEY_UP;
+            GO_DOWN = KEY_DOWN;
+            break;
+        case WASD: 
+            GO_LEFT = 'a';
+            GO_RIGHT = 'd';
+            GO_UP = 'w';
+            GO_DOWN = 's';
+            break;
+        case HJKL: 
+            GO_LEFT = 'h';
+            GO_RIGHT = 'l';
+            GO_UP = 'k';
+            GO_DOWN = 'j';
+            break;
+    }
+
+    // Get rid of all typed characters
+    int ch = getch();
+    while(ch != ERR)
+        ch = getch();
+    // Fianlly, set nodelay to false
+    nodelay(stdscr, 0);
+
     while(1){
         getyx(stdscr,y,x);
         
-        /* Get allowances left */
+        // Get allowances left
         mvprintw(1,0,"                                 ");
         mvprintw(3,0,"                              ");
         switch(allowances){
@@ -227,7 +257,7 @@ void pass(){
         }
         refresh();
         move(y,x);
-        /* Check if highlights need to be purged */
+        // Check if highlights need to be purged
         if(needsClearing){
             charCounter = 0;
             while(charCounter!=bracketLength+1){
@@ -259,14 +289,14 @@ void pass(){
             needsClearingMultiLine = 0;
             move(y,x);
         }
-        /* Clear the char array */
+        // Clear the char array
         for(i=0;i<12;i++)
             currentChar[i]=' ';
         currentChar[0] = (char) (char)mvinch(y,x);
-        /* Set the new y and x to origy and origx */
+        // Set the new y and x to origy and origx
         origy = y;
         origx = x;
-        /* Check for bracket tricks */
+        // Check for bracket tricks
         if((currentChar[0]=='(' || currentChar[0]=='<' || currentChar[0]=='[' || currentChar[0]=='{') && usedBrackets[getCharLoc(y,x)] && bracketTricks<WORDS_CHOSEN){
             charStart = x;
             bracketLength=0;
@@ -278,7 +308,7 @@ void pass(){
                 (endBracket == '>' && currentChar[0]=='<') || 
                 (endBracket == ']' && currentChar[0]=='[') || 
                 (endBracket == '}' && currentChar[0]=='{')){
-                    /* Reprint the bracket trick with highlight */
+                    // Reprint the bracket trick with highlight
                     attron(A_STANDOUT);
                     charCounter = 0;
                     while(1){
@@ -289,11 +319,11 @@ void pass(){
                         charCounter++;
                     }
                     attroff(A_STANDOUT);
-                    /* Print the bracket trick to output */
+                    // Print the bracket trick to output
                     attron(A_BOLD);
                     for(i=0;i<=charCounter;i++)
                         mvprintw(21,41+i,"%c",(int)currentChar[i]);
-                    /* Notify that highlighting will need to be cleared next move */
+                    // Notify that highlighting will need to be cleared next move
                     needsClearing = 1;
                 }
             }
@@ -304,9 +334,9 @@ void pass(){
                 mvprintw(21,41,"%c",currentChar[0]);
             }
         }
-        /* Check for letters */
+        // Check for letters
         else if(currentChar[0]>64 && currentChar[0]<91){
-            /* Check for letter behind the current location */
+            // Check for letter behind the current location
             int tempx = x;
             int tempy = y;
             while(bigString[getCharLoc(tempy,tempx)-1]>64 && bigString[getCharLoc(tempy,tempx)-1]<91){
@@ -322,8 +352,8 @@ void pass(){
                 }
             }
             startx = tempx;
-            starty = tempy; /* We'll need the location of the first char for cleaning */
-            /* And start there */
+            starty = tempy; // We'll need the location of the first char for clean
+            // And start there
             charCounter = 0;
             while(bigString[getCharLoc(tempy,tempx)+1]>64 && bigString[getCharLoc(tempy,tempx)+1]<91){
                 currentChar[charCounter] = bigString[getCharLoc(tempy,tempx)];
@@ -338,9 +368,9 @@ void pass(){
                     }
                 }
             }
-            /* Now currentChar is the String, and charCounter+1 is the length */
+            // Now currentChar is the String, and charCounter+1 is the length
             wordLength = charCounter+1;
-            /* Reprint the word with highlight */
+            // Reprint the word with highlight
             tempx = startx;
             tempy = starty;
             attron(A_STANDOUT);
@@ -360,14 +390,14 @@ void pass(){
                 }
             }
                     attroff(A_STANDOUT);
-                    /* Print the word to output */
+                    // Print the word to output
                     attron(A_BOLD);
                     for(i=0;i<charCounter;i++)
                         mvprintw(21,41+i,"%c",(int)currentChar[i]);
-                    /* Notify that highlighting will need to be cleared next move */
+                    // Notify that highlighting will need to be cleared next move
                     needsClearingMultiLine = 1;
         }
-        /* Nothing was found, print current char */
+        // Nothing was found, print current char
         else
             mvprintw(21,41,"%c",currentChar[0]);
         
@@ -376,15 +406,15 @@ void pass(){
         
         keyPress = getch();
         getyx(stdscr,y,x);
-        if(keyPress=='w'){
+        if(keyPress==GO_UP){
             if(y>5)
                 move(y-1,x);
         }
-        if(keyPress=='s'){
+        if(keyPress==GO_DOWN){
             if(y<21)
                 move(y+1,x);
         }
-        if(keyPress=='a'){
+        if(keyPress==GO_LEFT){
             if(x>7){
                 if(x==27)
                     move(y,18);
@@ -393,7 +423,7 @@ void pass(){
             }
                 
         }
-        if(keyPress=='d'){
+        if(keyPress==GO_RIGHT){
             if(x<38){
                 if(x==18)
                     move(y,27);
@@ -401,23 +431,23 @@ void pass(){
                     move(y,x+1);
             }
         }
-        if(keyPress==3)     /* Ctrl-C */
+        if(keyPress==3)     // Ctrl-C
             exit(0);
-        if(keyPress=='\n'){ /* Enter */
+        if(keyPress=='\n'){ // Enter
             mvprintw(17,40,"              ");
             mvprintw(18,40,"              ");
             mvprintw(19,40,"              ");
-            /* If the char is a left bracket */
+            // If the char is a left bracket
             if(((currentChar[0]=='(') && currentCharContains(currentChar,')')) || 
                (currentChar[0]=='<' && currentCharContains(currentChar,'>')) || 
                (currentChar[0]=='[' && currentCharContains(currentChar,']')) || 
                (currentChar[0]=='{' && currentCharContains(currentChar,'}'))){
-                /* Set the selected bracket as used */
+                // Set the selected bracket as used
                 usedBrackets[getCharLoc(y,x)] = 0;
-                /* Increment total bracket tricks used */
+                // Increment total bracket tricks used
                 bracketTricks++;
                 if(rand()%5==0){
-                    /* 20% chance of allowance replenish */
+                    // 20% chance of allowance replenish
                     sprintf(output,"Allowance   ");
                     mvprintw(18,40,">");
                     for(i=0;i<12;i++){
@@ -431,7 +461,7 @@ void pass(){
                     allowances = 4;
                 }
                 else{
-                    /* Remove a dud */
+                    // Remove a dud
                     int tempx,tempy;
                     pickagain:do{
                         if(rand()%2==0)
@@ -461,7 +491,7 @@ void pass(){
                             tempy++;
                         }
                     }
-                    /* Check if currentChar = correctWord */
+                    // Check if currentChar = correctWord
                     int allCorrect=1;
                     for(i=0;i<WORD_SIZE;i++){
                         if(currentChar[i]!=correctWord[i])
@@ -490,7 +520,7 @@ void pass(){
             
                 }
             }
-            /* Else compare it to the correct word */
+            // Else compare it to the correct word
             else{
                 int rightLetters = WORD_SIZE;
                 for(i=0;i<WORD_SIZE; i++){

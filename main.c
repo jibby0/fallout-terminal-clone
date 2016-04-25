@@ -31,11 +31,6 @@ int main(int argc, char * argv[]){
         exit(0);
     }
 
-    // Open the config file
-    FILE *fp = NULL;
-
-    fp = fopen("FalloutTerminal.cfg", "r");
-
     // Check if a difficulty arg was given
     if(argc > 1){
         if(!strcmp(argv[1], "--veryEasy")) {
@@ -60,11 +55,14 @@ int main(int argc, char * argv[]){
     }
     // Otherwise, read the file for words
     else {    
-        readWordsFromFile(fp);
+        readWordsFromFile();
     }
 
     // Read what should be launch on completion/victory
-    readLaunches(fp);
+    readLaunches();
+
+    // Read the key config
+    readKeys();
 
     // Gen a random seed
     srand ( (unsigned)time(NULL) );
@@ -75,7 +73,7 @@ int main(int argc, char * argv[]){
     refresh();
     attron(A_BOLD);
     nodelay(stdscr, 1);
-
+    keypad(stdscr, TRUE);
     // Check for color support. Start color if it exists.
     if(has_colors() == 1){
         start_color();
@@ -88,9 +86,6 @@ int main(int argc, char * argv[]){
 
     // Run pass
     pass();
-
-    // Close the config file
-    fclose(fp);
 
     return EXIT_SUCCESS;
 }
