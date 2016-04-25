@@ -33,3 +33,6 @@ ifeq ($(OS),Windows_NT)
 else
 	rm -f *.o FalloutTerminal
 endif
+
+debug: main.c print.c intro.c pass.c wordParse.c getline.c getdelim.c
+	$(CC) -o FalloutTerminal $^ $(CFLAGS) -ggdb
