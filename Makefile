@@ -1,9 +1,4 @@
-ifeq ($(shell uname -s),Darwin)
-	CC = /usr/local/Cellar/gcc/5.3.0/bin/gcc-5 
-else
-	CC = gcc
-endif 
-
+CC = gcc
 CFLAGS = -std=c99
 
 # DEBUGGING FLAGS
