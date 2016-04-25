@@ -21,7 +21,12 @@ int wordsToChoose;
 char * victoryProg;
 char * completeProg;
 
-void readWordsFromFile(FILE* fp){
+keyConfig_type keyConfig = ARROWS;
+
+void readWordsFromFile(){
+
+    // Open the config file
+    FILE * fp = fopen("FalloutTerminal.cfg", "r");
 
     // If there's no config file, default to very easy
     if(fp == NULL) {
@@ -35,21 +40,17 @@ void readWordsFromFile(FILE* fp){
     
     numWords = 0;
 
-    while(getline(&buf, &n, fp)){
+    while(getline(&buf, &n, fp) != -1){
         if(buf[0] == '#' || !strcmp(buf, "\n")) 
             continue;
 
         // Remove the \n at the end of buff
         buf[strlen(buf)-1] = '\0';
 
-        // Stop on :LAUNCH_ON_*
-        if(buf[0] == ':' ) {
-            if(!strncmp(buf, ":WORDS_TO_CHOOSE=",17)) {
-                sscanf(buf+17, "%d", &wordsToChoose);
-                continue;
-            }
-            else
-                break;
+        // Check for :WORDS_TO_CHOOSE
+        if(!strncmp(buf, ":WORDS_TO_CHOOSE=",17)) {
+            sscanf(buf+17, "%d", &wordsToChoose);
+            continue;
         }
 
         // Check all chars in buf are A-Z or a-z
@@ -104,11 +105,13 @@ void readWordsFromFile(FILE* fp){
     }
 
     free(buf);
+    fclose(fp);
 }
 
-void readLaunches(FILE* fp){
-    // Rewind the file
-    rewind(fp);
+void readLaunches(){
+
+    // Reopen the file
+    FILE * fp = fopen("FalloutTerminal.cfg", "r");
 
     // If the file doesn't exist, stop
     if(fp == NULL){
@@ -118,8 +121,8 @@ void readLaunches(FILE* fp){
     char * buf;
     size_t n = 0;
 
-    // Look or the parameters. Stop once LAUNCH_ON_COMPLETE is read.
-    while(getline(&buf, &n, fp)){
+    // Look for the parameters.
+    while(getline(&buf, &n, fp) != -1){
 
         // Remove the \n at the end of buff
         buf[strlen(buf)-1] = '\0';
@@ -133,13 +136,45 @@ void readLaunches(FILE* fp){
         if(!strncmp(buf, ":LAUNCH_ON_COMPLETE=", 20) && completeProg == NULL) {
            completeProg = malloc(sizeof(char) * strlen(buf)-20+1); 
            strcpy(completeProg, buf+20);
-           break;
         }
 
     }
 
     free(buf);
+    fclose(fp);
 
+}
+
+void readKeys(){
+    // Reopen the file
+    FILE * fp = fopen("FalloutTerminal.cfg", "r");
+
+    // If the file doesn't exist, stop
+    if(fp == NULL){
+        return;
+    }
+
+    char * buf;
+    size_t n = 0;
+
+    while(getline(&buf, &n, fp) != -1){
+
+        // Remove the \n at the end of buff
+        buf[strlen(buf)-1] = '\0';
+
+        // Search for :KEYS=
+        if(!strncmp(buf, ":KEYS=", 6)) {
+            if(!strcmp(buf+6,"ARROWS")) {
+                keyConfig = ARROWS;
+            }else if(!strcmp(buf+6,"WASD")) {
+                keyConfig = WASD;
+            }else if(!strcmp(buf+6,"HJKL")) {
+                keyConfig = HJKL;
+            }
+        }
+    }
+    free(buf);
+    fclose(fp);
 }
 
 void setWordArr(char *words[]){
@@ -377,6 +412,10 @@ char * getCompleteProg() {
     if(completeProg == NULL)
         return "";
     return completeProg;
+}
+
+keyConfig_type getKeyConfig(){
+    return keyConfig;
 }
 
 void freeAll() {

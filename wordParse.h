@@ -3,9 +3,13 @@
 #ifndef FILEPARSE_H
 #define FILEPARSE_H
 
-void readWordsFromFile(FILE *fp);
+typedef enum {ARROWS, WASD, HJKL} keyConfig_type;
 
-void readLaunches(FILE* fp);
+void readWordsFromFile();
+
+void readLaunches();
+
+void readKeys();
 
 void setVeryEasy();
 
@@ -28,6 +32,8 @@ int getWordLength();
 char * getVictoryProg();
 
 char * getCompleteProg();
+
+keyConfig_type getKeyConfig();
 
 void freeAll();
 
