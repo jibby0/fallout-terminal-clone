@@ -53,6 +53,7 @@ Building
 
 TODO list:
 
+    Try spawning processes with exec, rather than system
     Screen centering
     Have a typing animation for the guesses, as well as a list of preivous guesses
 	Possible mouse support?
