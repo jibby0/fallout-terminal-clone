@@ -1,11 +1,11 @@
 CC = gcc
-CFLAGS = -std=c99
+CFLAGS = -std=c99 
 
 # DEBUGGING FLAGS
 # CFLAGS = -ggdb -Wall -Wextra -pedantic -std=c99
 
 ifeq ($(OS),Windows_NT)
-	CFLAGS += -lpdcurses
+	CFLAGS += -lpdcurses -static
 else
 	CFLAGS += -lncurses
 endif
