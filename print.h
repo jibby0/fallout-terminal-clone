@@ -5,14 +5,14 @@
 /// @param arr  string to print
 /// @param line  line on which to print the string
 ///
-void slowPrint(char arr[], int line);
+void slowPrint(char arr[], int line, int ybuf, int xbuf);
 
 
 /// Print characters onto the screen (player input).
 /// @param arr  string to print
 /// @param line  line on which to print the string
 ///
-void slowType(char arr[], int line);
+void slowType(char arr[], int line, int ybuf, int xbuf);
 
 
 /// Operates the same way as slowPrint, but cannot be interrupted 
@@ -20,7 +20,7 @@ void slowType(char arr[], int line);
 /// @param arr  string to print
 /// @param line  line on which to print the string
 /// 
-void passPrint(char arr[], int line);
+void passPrint(char arr[], int line, int ybuf, int xbuf);
 
 
 /// Checks if a key has been pressed. Used to skip the opening sequence and
@@ -37,7 +37,7 @@ int kbhit();
 /// @param line  line on which to print the string
 /// @param offset  used to determine which side of the screen to print on
 ///
-void printChoices(int hex, char arr[], int line, int offset);
+void printChoices(int hex, char arr[], int line, int offset, int ybuf, int xbuf);
 
 #endif // PRINT_H
 

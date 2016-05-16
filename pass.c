@@ -47,15 +47,26 @@ static int getCharLoc(int y, int x){
 
 void pass(){
     
+    // Get the size of the terminal window. 
+    // The size of the game window is 53x22.
+    int BUFF_Y = 0, BUFF_X = 0;
+    int maxy, maxx;
+
+    getmaxyx(stdscr, maxy, maxx);
+
+    if(maxy > 22)
+        BUFF_Y = maxy/2 - 22/2;
+    if(maxx > 53)
+        BUFF_X = maxx/2 - 53/2;
     // Clear the screen
     erase();
 
     // Intro text
-    passPrint("ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL",0);
+    passPrint("ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL", 0, BUFF_Y, BUFF_X);
     
-    passPrint("ENTER PASSWORD NOW", 1);
+    passPrint("ENTER PASSWORD NOW", 1, BUFF_Y, BUFF_X);
 
-    passPrint("4 ATTEMPT(S) LEFT: * * * *", 3);
+    passPrint("4 ATTEMPT(S) LEFT: * * * *", 3, BUFF_Y, BUFF_X);
     
     // Generate the hex values on the left sides
     int arbHex;
@@ -144,7 +155,7 @@ void pass(){
         for(int j=0; j<12; j++){
             temp[j] = bigString[j+current];
         }
-        printChoices(arbHex,temp,i, OFFSET_LEFT);
+        printChoices(arbHex,temp,i, OFFSET_LEFT, BUFF_Y, BUFF_X);
         current = current + 12;
         arbHex = arbHex + 12;
     }
@@ -154,13 +165,13 @@ void pass(){
         for(int j=0; j<12; j++){
             temp[j] = bigString[j+current];
         }
-        printChoices(arbHex,temp,i, OFFSET_RIGHT);
+        printChoices(arbHex,temp,i, OFFSET_RIGHT, BUFF_Y, BUFF_X);
         current = current + 12;
         arbHex = arbHex + 12;
     }
     
     
-    mvprintw(21,40,"%c",'>');
+    mvprintw(BUFF_Y+21,BUFF_X+40,"%c",'>');
     move(5,7);
     char currentChar[12]; // Max length currentChar could be (total possible length of a bracket trick)
     currentChar[0] = (char)mvinch(5,7);
@@ -213,27 +224,27 @@ void pass(){
         getyx(stdscr,y,x);
         
         // Get allowances left
-        mvprintw(1,0,"                                 ");
-        mvprintw(3,0,"                              ");
+        mvprintw(BUFF_Y+1,BUFF_X+0,"                                 ");
+        mvprintw(BUFF_Y+3,BUFF_X+0,"                              ");
         switch(allowances){
-            case 1: mvprintw(3,0,"1 ATTEMPT(S) LEFT: *");
+            case 1: mvprintw(BUFF_Y+3,BUFF_X+0,"1 ATTEMPT(S) LEFT: *");
                     attron(A_BLINK);
-                    mvprintw(1,0,"!!! WARNING: LOCKOUT IMNINENT !!!");
+                    mvprintw(BUFF_Y+1,BUFF_X+0,"!!! WARNING: LOCKOUT IMNINENT !!!");
                     attroff(A_BLINK);
                     attron(A_BOLD);
                     break;
-            case 2: mvprintw(3,0,"2 ATTEMPT(S) LEFT: * *");
-                    mvprintw(1,0,"ENTER PASSWORD NOW");
+            case 2: mvprintw(BUFF_Y+3,BUFF_X+0,"2 ATTEMPT(S) LEFT: * *");
+                    mvprintw(BUFF_Y+1,BUFF_X+0,"ENTER PASSWORD NOW");
                     break;
-            case 3: mvprintw(3,0,"3 ATTEMPT(S) LEFT: * * *");
-                    mvprintw(1,0,"ENTER PASSWORD NOW");
+            case 3: mvprintw(BUFF_Y+3,BUFF_X+0,"3 ATTEMPT(S) LEFT: * * *");
+                    mvprintw(BUFF_Y+1,BUFF_X+0,"ENTER PASSWORD NOW");
                     break;
-            case 4: mvprintw(3,0,"4 ATTEMPT(S) LEFT: * * * *");
-                    mvprintw(1,0,"ENTER PASSWORD NOW");
+            case 4: mvprintw(BUFF_Y+3,BUFF_X+0,"4 ATTEMPT(S) LEFT: * * * *");
+                    mvprintw(BUFF_Y+1,BUFF_X+0,"ENTER PASSWORD NOW");
                     break;
             case 0: clear();
-                    mvprintw(10,20,"TERMINAL LOCKED");
-                    mvprintw(12,12,"PLEASE CONTACT AN ADMINISTRATOR");
+                    mvprintw(BUFF_Y+10,BUFF_X+20,"TERMINAL LOCKED");
+                    mvprintw(BUFF_Y+12,BUFF_X+12,"PLEASE CONTACT AN ADMINISTRATOR");
                     refresh();
                     SLEEP(3000000);
                     endwin();
@@ -249,10 +260,10 @@ void pass(){
             charCounter = 0;
             while(charCounter!=bracketLength+1){
                 currentChar[charCounter] = (char)mvinch(origy,charStart+charCounter);
-                mvprintw(origy,charStart+charCounter,"%c",(int)currentChar[charCounter]);
+                mvprintw(BUFF_Y+origy,BUFF_X+charStart+charCounter,"%c",(int)currentChar[charCounter]);
                 charCounter++;
             }
-            mvprintw(21,41,"            ",currentChar[0]);
+            mvprintw(BUFF_Y+21,BUFF_X+41,"            ",currentChar[0]);
             needsClearing = 0;
             move(y,origx);
         }
@@ -260,7 +271,7 @@ void pass(){
             charCounter = 0;
             while(charCounter!=wordLength){
                 currentChar[charCounter] = (char)mvinch(starty,startx);
-                mvprintw(starty,startx,"%c",currentChar[charCounter]);
+                mvprintw(BUFF_Y+starty,BUFF_X+startx,"%c",currentChar[charCounter]);
                 charCounter++;
                 startx++;
                 if(startx==19 || startx==39){
@@ -272,7 +283,7 @@ void pass(){
                     }
                 }
             }
-            mvprintw(21,41,"            ",currentChar[0]);
+            mvprintw(BUFF_Y+21,BUFF_X+41,"            ",currentChar[0]);
             needsClearingMultiLine = 0;
             move(y,x);
         }
@@ -300,7 +311,7 @@ void pass(){
                     charCounter = 0;
                     while(1){
                         currentChar[charCounter] = (char)mvinch(y,charStart+charCounter);
-                        mvprintw(y,charStart+charCounter,"%c",currentChar[charCounter]);
+                        mvprintw(BUFF_Y+y,BUFF_X+charStart+charCounter,"%c",currentChar[charCounter]);
                         if(currentChar[charCounter] == endBracket)
                             break;
                         charCounter++;
@@ -309,7 +320,7 @@ void pass(){
                     // Print the bracket trick to output
                     attron(A_BOLD);
                     for(i=0;i<=charCounter;i++)
-                        mvprintw(21,41+i,"%c",(int)currentChar[i]);
+                        mvprintw(BUFF_Y+21,BUFF_X+41+i,"%c",(int)currentChar[i]);
                     // Notify that highlighting will need to be cleared next move
                     needsClearing = 1;
                 }
@@ -318,7 +329,7 @@ void pass(){
                 (endBracket == '>' && currentChar[0]=='<') || 
                 (endBracket == ']' && currentChar[0]=='[') || 
                 (endBracket == '}' && currentChar[0]=='{'))){
-                mvprintw(21,41,"%c",currentChar[0]);
+                mvprintw(BUFF_Y+21,BUFF_X+41,"%c",currentChar[0]);
             }
         }
         // Check for letters
@@ -364,7 +375,7 @@ void pass(){
             charCounter = 0;
             while(charCounter!=wordLength){
                 currentChar[charCounter] = (char)mvinch(tempy,tempx);
-                mvprintw(tempy,tempx,"%c",currentChar[charCounter]);
+                mvprintw(BUFF_Y+tempy,BUFF_X+tempx,"%c",currentChar[charCounter]);
                 charCounter++;
                 tempx++;
                 if(tempx==19 || tempx==39){
@@ -380,13 +391,13 @@ void pass(){
                     // Print the word to output
                     attron(A_BOLD);
                     for(i=0;i<charCounter;i++)
-                        mvprintw(21,41+i,"%c",(int)currentChar[i]);
+                        mvprintw(BUFF_Y+21,BUFF_X+41+i,"%c",(int)currentChar[i]);
                     // Notify that highlighting will need to be cleared next move
                     needsClearingMultiLine = 1;
         }
         // Nothing was found, print current char
         else
-            mvprintw(21,41,"%c",currentChar[0]);
+            mvprintw(BUFF_Y+21,BUFF_X+41,"%c",currentChar[0]);
         
         move(origy,origx);
         refresh();
@@ -421,9 +432,9 @@ void pass(){
         if(keyPress==3)     // Ctrl-C
             exit(0);
         if(keyPress=='\n'){ // Enter
-            mvprintw(17,40,"              ");
-            mvprintw(18,40,"              ");
-            mvprintw(19,40,"              ");
+            mvprintw(BUFF_Y+17,BUFF_X+40,"              ");
+            mvprintw(BUFF_Y+18,BUFF_X+40,"              ");
+            mvprintw(BUFF_Y+19,BUFF_X+40,"              ");
             // If the char is a left bracket
             if(((currentChar[0]=='(') && currentCharContains(currentChar,')')) || 
                (currentChar[0]=='<' && currentCharContains(currentChar,'>')) || 
@@ -436,14 +447,14 @@ void pass(){
                 if(rand()%5==0){
                     // 20% chance of allowance replenish
                     sprintf(output,"Allowance   ");
-                    mvprintw(18,40,">");
+                    mvprintw(BUFF_Y+18,BUFF_X+40,">");
                     for(i=0;i<12;i++){
-                        mvprintw(18,41+i,"%c",output[i]);
+                        mvprintw(BUFF_Y+18,BUFF_X+41+i,"%c",output[i]);
                     }
                     sprintf(output,"replenished.");
-                    mvprintw(19,40,">");
+                    mvprintw(BUFF_Y+19,BUFF_X+40,">");
                     for(i=0;i<12;i++){
-                        mvprintw(19,41+i,"%c",output[i]);
+                        mvprintw(BUFF_Y+19,BUFF_X+41+i,"%c",output[i]);
                     }
                     allowances = 4;
                 }
@@ -490,7 +501,7 @@ void pass(){
                     tempx = startx;
                     tempy = starty;
                     while(bigString[getCharLoc(tempy,tempx)]>64 && bigString[getCharLoc(tempy,tempx)]<91){
-                        mvprintw(tempy,tempx,"%c",'.');
+                        mvprintw(BUFF_Y+tempy,BUFF_X+tempx,"%c",'.');
                         bigString[getCharLoc(tempy,tempx)] = '.';
                         tempx++;
                         if(tempx==19 || tempx==39){
@@ -500,9 +511,9 @@ void pass(){
                     }
                     
                     sprintf(output,"Dud removed.");
-                    mvprintw(19,40,">");
+                    mvprintw(BUFF_Y+19,BUFF_X+40,">");
                     for(i=0;i<12;i++){
-                        mvprintw(19,41+i,"%c",output[i]);
+                        mvprintw(BUFF_Y+19,BUFF_X+41+i,"%c",output[i]);
                     }
             
                 }
@@ -515,29 +526,29 @@ void pass(){
                         rightLetters--;
                 }
                 if(rightLetters==WORD_SIZE){
-                    mvprintw(15,40,">");
+                    mvprintw(BUFF_Y+15,BUFF_X+40,">");
                     for(i=0;i<12;i++){
-                        mvprintw(15,41+i,"%c",currentChar[i]);
+                        mvprintw(BUFF_Y+15,BUFF_X+41+i,"%c",currentChar[i]);
                     }
                     sprintf(output,"Exact match!");
-                    mvprintw(16,40,">");
+                    mvprintw(BUFF_Y+16,BUFF_X+40,">");
                     for(i=0;i<12;i++){
-                        mvprintw(16,41+i,"%c",output[i]);
+                        mvprintw(BUFF_Y+16,BUFF_X+41+i,"%c",output[i]);
                     }
                     sprintf(output,"Please wait ");
-                    mvprintw(17,40,">");
+                    mvprintw(BUFF_Y+17,BUFF_X+40,">");
                     for(i=0;i<12;i++){
-                        mvprintw(17,41+i,"%c",output[i]);
+                        mvprintw(BUFF_Y+17,BUFF_X+41+i,"%c",output[i]);
                     }
                     sprintf(output,"while system");
-                    mvprintw(18,40,">");
+                    mvprintw(BUFF_Y+18,BUFF_X+40,">");
                     for(i=0;i<12;i++){
-                        mvprintw(18,41+i,"%c",output[i]);
+                        mvprintw(BUFF_Y+18,BUFF_X+41+i,"%c",output[i]);
                     }
                     sprintf(output,"is accessed.");
-                    mvprintw(19,40,">");
+                    mvprintw(BUFF_Y+19,BUFF_X+40,">");
                     for(i=0;i<12;i++){
-                        mvprintw(19,41+i,"%c",output[i]);
+                        mvprintw(BUFF_Y+19,BUFF_X+41+i,"%c",output[i]);
                     }
                     refresh();
                     SLEEP(3000000);
@@ -552,19 +563,19 @@ void pass(){
                     
                 }
                 else{
-                    mvprintw(17,40,">");
+                    mvprintw(BUFF_Y+17,BUFF_X+40,">");
                     for(i=0;i<12;i++){
-                        mvprintw(17,41+i,"%c",currentChar[i]);
+                        mvprintw(BUFF_Y+17,BUFF_X+41+i,"%c",currentChar[i]);
                     }
                     sprintf(output,"Entry denied");
-                    mvprintw(18,40,">");
+                    mvprintw(BUFF_Y+18,BUFF_X+40,">");
                     for(i=0;i<12;i++){
-                        mvprintw(18,41+i,"%c",output[i]);
+                        mvprintw(BUFF_Y+18,BUFF_X+41+i,"%c",output[i]);
                     }
                     sprintf(output,"%d/%d correct.",rightLetters,WORD_SIZE);
-                    mvprintw(19,40,">");
+                    mvprintw(BUFF_Y+19,BUFF_X+40,">");
                     for(i=0;i<12;i++){
-                        mvprintw(19,41+i,"%c",output[i]);
+                        mvprintw(BUFF_Y+19,BUFF_X+41+i,"%c",output[i]);
                     }
                     allowances--;
                 }

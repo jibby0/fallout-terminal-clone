@@ -21,12 +21,12 @@
 #include "print.h"
 #include "pass.h"
 
-void slowPrint(char arr[], int line){
+void slowPrint(char arr[], int line, int ybuf, int xbuf){
     for(int i=0; (unsigned long)i<strlen(arr); i++){  
         /* Print the current character in the current position. */
-        mvprintw(line,i,"%c",arr[i]);
+        mvprintw(ybuf+line, xbuf+i, "%c", arr[i]);
         /* Move the cursor to the next position */
-        move(line, i+1);
+        move(ybuf+line, xbuf+i+1);
         refresh();
         /* If any keyboard input was recieved, go directly to pass(), otherwise continue */
         if(kbhit()){
@@ -37,10 +37,10 @@ void slowPrint(char arr[], int line){
     return;
 }
 
-void slowType(char arr[], int line){
+void slowType(char arr[], int line, int ybuf, int xbuf){
     for(int i=0; (unsigned long)i<strlen(arr); i++){  
-        mvprintw(line,i+1,"%c",arr[i]);
-        move(line, i+2);
+        mvprintw(ybuf+line, xbuf+i, "%c", arr[i]);
+        move(ybuf+line, xbuf+i+2);
         refresh();
         if(kbhit()){
             pass();
@@ -50,10 +50,10 @@ void slowType(char arr[], int line){
     return;
 }
 
-void passPrint(char arr[], int line){
+void passPrint(char arr[], int line, int ybuf, int xbuf){
     for(int i=0; (unsigned long)i<strlen(arr); i++){  
-        mvprintw(line,i,"%c",arr[i]);
-        move(line, i+1);
+        mvprintw(ybuf+line, xbuf+i, "%c", arr[i]);
+        move(ybuf+line, xbuf+i+1);
         refresh();
         SLEEP(20000);
     }
@@ -71,11 +71,11 @@ int kbhit(){
     }
 }
 
-void printChoices(int hex, char arr[], int line, int offset){
-    mvprintw(line,offset,"0x%X", hex);
+void printChoices(int hex, char arr[], int line, int offset, int ybuf, int xbuf){
+    mvprintw(ybuf+line, xbuf+offset, "0x%X", hex);
     for(int i=0; i<12; i++)
-        mvprintw(line,7+offset+i,"%c",arr[i]);
-    move(line, 20+offset);
+        mvprintw(ybuf+line, xbuf+7+offset+i, "%c", arr[i]);
+    move(ybuf+line, xbuf+20+offset);
     refresh();
     SLEEP(30000);
 }
