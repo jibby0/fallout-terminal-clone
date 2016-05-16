@@ -54,7 +54,7 @@ Building
 TODO list:
 
     Decent looking screen centering
-    Have a typing animation for the guesses, as well as a list of previous guesses
+    Add a typing animation for the guesses
 	Possible mouse support?
 
 
