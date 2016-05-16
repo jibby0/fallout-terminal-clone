@@ -421,9 +421,21 @@ void pass(){
         if(keyPress==3)     // Ctrl-C
             exit(0);
         if(keyPress=='\n'){ // Enter
-            mvprintw(17,40,"              ");
-            mvprintw(18,40,"              ");
-            mvprintw(19,40,"              ");
+            // Get past answers and shift them up along the right.
+            // This "log" handles 5 preivous commands.
+
+            mvprintw(5,41,"              ");
+            mvprintw(6,41,"              ");
+            mvprintw(7,41,"              ");
+
+            char buf[15];
+            for(int i=8; i<19; i+=3) {
+                for(int j=0; j< 3; j++){
+                    mvinnstr(i+j, 40, buf, 14);
+                    mvprintw(i+j,40,"              ");
+                    mvprintw(i+j-3, 40, "%s", buf);
+                }
+            }
             // If the char is a left bracket
             if(((currentChar[0]=='(') && currentCharContains(currentChar,')')) || 
                (currentChar[0]=='<' && currentCharContains(currentChar,'>')) || 
@@ -435,6 +447,8 @@ void pass(){
                 bracketTricks++;
                 if(rand()%5==0){
                     // 20% chance of allowance replenish
+                    mvinnstr(21,40, buf, 14);
+                    mvprintw(17,40, "%s", buf);
                     sprintf(output,"Allowance   ");
                     mvprintw(18,40,">");
                     for(i=0;i<12;i++){
@@ -499,11 +513,10 @@ void pass(){
                         }
                     }
                     
-                    sprintf(output,"Dud removed.");
-                    mvprintw(19,40,">");
-                    for(i=0;i<12;i++){
-                        mvprintw(19,41+i,"%c",output[i]);
-                    }
+                    mvinnstr(21,40, buf, 14);
+                    mvprintw(17,40, "%s", buf);
+                    mvprintw(18,40,">Dud");
+                    mvprintw(19,40,">removed.");
             
                 }
             }
