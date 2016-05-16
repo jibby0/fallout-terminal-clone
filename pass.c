@@ -46,23 +46,10 @@ static int getCharLoc(int y, int x){
 }
 
 void pass(){
-
-
-    // Start a new screen where nodelay is false
-    erase();
-    endwin();
-    initscr();
-    noecho();
-    refresh();
-    attron(A_BOLD);
-    keypad(stdscr, TRUE);
-    if(has_colors() == 1){
-        // Colors
-        start_color();
-        init_pair(1,COLOR_GREEN,COLOR_BLACK);
-        attron(COLOR_PAIR(1));
-    }
     
+    // Clear the screen
+    erase();
+
     // Intro text
     passPrint("ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL",0);
     
@@ -219,7 +206,7 @@ void pass(){
     int ch = getch();
     while(ch != ERR)
         ch = getch();
-    // Fianlly, set nodelay to false
+    // Finally, set nodelay to false so we can wait for input
     nodelay(stdscr, 0);
 
     while(1){
