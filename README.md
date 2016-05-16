@@ -53,17 +53,14 @@ Building
 
 TODO list:
 
-    Try spawning processes with exec, rather than system
-    Screen centering
-    Have a typing animation for the guesses, as well as a list of preivous guesses
+    Decent looking screen centering
+    Have a typing animation for the guesses, as well as a list of previous guesses
 	Possible mouse support?
 
 
 Bugs:
 
-    Fallout 3 doesn't seem to play nice with the launching. But I haven't
-    tested this much. You may just be better off putting this program in a
-    batch file.
+    Fallout 3 and New Vegas don't seem to play well with the launching.
 
     The OSX binary may segfault with error 11. This hasn't happened with the
     couple macs I've tested it on, but my friend's mac does it constantly. It
