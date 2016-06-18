@@ -28,7 +28,7 @@ Building
         that, or change the line:
     CC = gcc
         to read:
-    CC = C:\MinGW\bin
+    CC = C:\MinGW\bin\gcc
         (assuming you installed MinGW in that location)
 
 	LINUX
