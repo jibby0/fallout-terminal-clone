@@ -483,7 +483,7 @@ void pass(){
                     starty = tempy;
                     
                     charCounter = 0;
-                    while(bigString[getCharLoc(tempy,tempx)+1]>64 && bigString[getCharLoc(tempy,tempx)+1]<91){
+                    while(bigString[getCharLoc(tempy,tempx)]>64 && bigString[getCharLoc(tempy,tempx)]<91){
                         currentChar[charCounter] = bigString[getCharLoc(tempy,tempx)];
                         charCounter++;
                         tempx++;
