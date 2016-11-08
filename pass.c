@@ -112,8 +112,8 @@ void pass(){
         place = rand()%(BIGSTRING_SIZE-WORD_SIZE);
 
         // Check of any characters there or around it are A-Z
-        for(i=place-1; i<place+WORD_SIZE+1; i++){
-            if(bigString[i] > 64 && bigString[i] < 91){
+        for(int j=place-1; j<place+WORD_SIZE+1; j++){
+            if(bigString[j] > 64 && bigString[j] < 91){
                 valid = 0;
                 break;
             }
@@ -130,14 +130,13 @@ void pass(){
         takenWords[wordLoc] = 1;
 
         // Add the word to bigString
-        for(i=place; i<place+WORD_SIZE; i++){
-            bigString[i] = *(*(wordArr+wordLoc)+(i-place));
+        for(int j=place; j<place+WORD_SIZE; j++){
+            bigString[j] = *(*(wordArr+wordLoc)+(j-place));
             // If this is the first word chosen, it is the correct word.
             if(!pickedWord)
-                correctWord[i-place] = *(*(wordArr+wordLoc)+(i-place));
+                correctWord[j-place] = *(*(wordArr+wordLoc)+(j-place));
         }
         pickedWord = 1;
-        left--;
     }
 
 
@@ -380,8 +379,8 @@ void pass(){
                     }
                 }
             }
-            // Now currentChar is the String, and charCounter+1 is the length
-            wordLength = charCounter+1;
+            // Now currentChar is the String, and charCounter is the length
+            wordLength = charCounter;
             // Reprint the word with highlight
             tempx = startx;
             tempy = starty;
